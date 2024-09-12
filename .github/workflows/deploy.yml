@@ -13,8 +13,6 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: connect to ec2 instance
-        run: ssh -i ${{ secrets.KEY }} ${{ secrets.USERNAME }}@${{ secrets.HOST }}
       - name: Pull the Docker image
         run: sudo docker pull vietnhat0351/english4kids:1.0
       - name: Delete the running container
