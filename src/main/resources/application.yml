@@ -1,0 +1,24 @@
+spring:
+  datasource:
+#    url: jdbc:postgresql://localhost:5432/mydb
+    url: jdbc:postgresql://0.0.0.0:5432/mydb
+    username:  admin #postgres
+    password:  admin  #123456
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+application:
+  security:
+    jwt:
+      secret: 254d762d256a3b3f712c3c345c372c5e535a414c2c555e6f315b793c50
+      expired:
+        access:  1000000
+        refresh:  2592000000
+server:
+  port: 8080
+
