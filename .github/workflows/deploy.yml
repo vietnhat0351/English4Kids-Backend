@@ -1,0 +1,21 @@
+name: Deploy to AWS
+
+on:
+  workflow_run:
+    workflows: ["Docker Image CI"]
+    types:
+      - completed
+
+jobs:
+
+  build:
+
+    runs-on: self-hosted
+
+    steps:
+      - name: Pull the Docker image
+        run: sudo docker pull vietnhat0351/english4kids:1.0
+      - name: Delete the running container
+        run: sudo docker rm -f github-actions || true
+      - name: Run the Docker container
+        run: sudo docker run -d -p 8080:8080 --name backend vietnhat0351/english4kids:1.0
