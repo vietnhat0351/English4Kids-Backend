@@ -1,9 +1,9 @@
 
 spring:
   datasource:
-    url: ${{DB_URL}}
-    username: ${{DB_USERNAME}}
-    password: ${{DB_PASSWORD}}
+    url: ${{secrets.DB_URL}}
+    username: ${{secrets.DB_USERNAME}}
+    password: ${{secrets.DB_PASSWORD}}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -15,8 +15,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${{MAIL_USERNAME}}
-    password: ${{MAIL_PASSWORD}}
+    username: ${{secrets.MAIL_USERNAME}}
+    password: ${{secrets.MAIL_PASSWORD}}
     properties:
       mail:
         smtp:
@@ -33,7 +33,7 @@ spring:
 application:
   security:
     jwt:
-      secret: ${{JWT_SECRET}}
+      secret: ${{secrets.JWT_SECRET}}
       expired:
         access:  1000000
         refresh:  2592000000
