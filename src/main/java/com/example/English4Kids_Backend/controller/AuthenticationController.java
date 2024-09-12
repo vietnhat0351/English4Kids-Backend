@@ -1,15 +1,19 @@
-package com.revolver.springsecurity.controller;
+package com.example.English4Kids_Backend.controller;
 
 
-import com.revolver.springsecurity.dtos.AuthenResponse;
-import com.revolver.springsecurity.dtos.LoginRequest;
-import com.revolver.springsecurity.dtos.RegisterRequest;
-import com.revolver.springsecurity.services.AuthenticationService;
+
+import com.example.English4Kids_Backend.dtos.AuthedResponse;
+import com.example.English4Kids_Backend.dtos.LoginRequest;
+import com.example.English4Kids_Backend.dtos.RegisterRequest;
+import com.example.English4Kids_Backend.services.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
@@ -21,13 +25,13 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenResponse> register(
+    public ResponseEntity<AuthedResponse> register(
             @RequestBody RegisterRequest request
     ){
         return ResponseEntity.ok(authenticationService.register(request));
     }
     @PostMapping("/login")
-    public ResponseEntity<AuthenResponse> login(
+    public ResponseEntity<AuthedResponse> login(
             @RequestBody LoginRequest request
     ){
         return ResponseEntity.ok(authenticationService.login(request));

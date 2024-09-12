@@ -1,7 +1,7 @@
-package com.revolver.springsecurity.dtos;
+package com.example.English4Kids_Backend.dtos;
 
 
-import com.revolver.springsecurity.entities.Role;
+import com.example.English4Kids_Backend.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

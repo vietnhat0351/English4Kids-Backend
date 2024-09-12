@@ -1,4 +1,4 @@
-package com.revolver.springsecurity.config;
+package com.example.English4Kids_Backend.config;
 
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;

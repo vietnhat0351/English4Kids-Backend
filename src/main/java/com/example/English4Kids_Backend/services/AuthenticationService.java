@@ -1,12 +1,13 @@
-package com.revolver.springsecurity.services;
+package com.example.English4Kids_Backend.services;
 
+import com.example.English4Kids_Backend.dtos.AuthedResponse;
+import com.example.English4Kids_Backend.dtos.LoginRequest;
+import com.example.English4Kids_Backend.dtos.RegisterRequest;
+import com.example.English4Kids_Backend.entities.Role;
+import com.example.English4Kids_Backend.entities.User;
+import com.example.English4Kids_Backend.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revolver.springsecurity.dtos.AuthenResponse;
-import com.revolver.springsecurity.dtos.LoginRequest;
-import com.revolver.springsecurity.dtos.RegisterRequest;
-import com.revolver.springsecurity.entities.Role;
-import com.revolver.springsecurity.entities.User;
-import com.revolver.springsecurity.repositories.UserRepository;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenResponse register(RegisterRequest request) {
+    public AuthedResponse register(RegisterRequest request) {
         try {
             var user = User.builder()
                     .firstName(request.getFirstName())
@@ -41,7 +42,7 @@ public class AuthenticationService {
             var jwtToken = jwtService.generateToken(savedUser);
             var refreshToken = jwtService.generateRefreshToken(savedUser);
 
-            return AuthenResponse.builder()
+            return AuthedResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
                     .build();
@@ -49,7 +50,7 @@ public class AuthenticationService {
             return null;
         }
     }
-    public AuthenResponse registerForAdmin(RegisterRequest request) {
+    public AuthedResponse registerForAdmin(RegisterRequest request) {
         try {
             var user = User.builder()
                     .firstName(request.getFirstName())
@@ -63,7 +64,7 @@ public class AuthenticationService {
             var jwtToken = jwtService.generateToken(savedUser);
             var refreshToken = jwtService.generateRefreshToken(savedUser);
 
-            return AuthenResponse.builder()
+            return AuthedResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
                     .build();
@@ -72,7 +73,7 @@ public class AuthenticationService {
         }
     }
 
-    public AuthenResponse login(LoginRequest request) {
+    public AuthedResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
@@ -80,7 +81,7 @@ public class AuthenticationService {
             User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
             var jwtToken = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(user);
-            return AuthenResponse.builder()
+            return AuthedResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
                     .build();
@@ -104,7 +105,7 @@ public class AuthenticationService {
             var user = this.userRepository.findByEmail(userEmail).orElseThrow();
             if (jwtService.isTokenValid(refreshToken)) {
               var accessToken = jwtService.generateToken(user);
-              var authenResponse = AuthenResponse.builder()
+              var authenResponse = AuthedResponse.builder()
                       .accessToken(accessToken)
                       .refreshToken(refreshToken)
                       .build();

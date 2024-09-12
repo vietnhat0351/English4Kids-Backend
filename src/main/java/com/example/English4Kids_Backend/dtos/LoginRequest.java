@@ -1,4 +1,4 @@
-package com.revolver.springsecurity.dtos;
+package com.example.English4Kids_Backend.dtos;
 
 
 import lombok.AllArgsConstructor;

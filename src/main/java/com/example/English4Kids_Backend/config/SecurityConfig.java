@@ -1,4 +1,4 @@
-package com.revolver.springsecurity.config;
+package com.example.English4Kids_Backend.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,9 +13,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.revolver.springsecurity.entities.Permission.*;
-import static com.revolver.springsecurity.entities.Role.ADMIN;
-import static com.revolver.springsecurity.entities.Role.MANAGER;
+import static com.example.English4Kids_Backend.entities.Permission.*;
+import static com.example.English4Kids_Backend.entities.Role.ADMIN;
+import static com.example.English4Kids_Backend.entities.Role.MANAGER;
 
 @Configuration
 @EnableWebSecurity

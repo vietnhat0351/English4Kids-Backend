@@ -1,7 +1,7 @@
-package com.revolver.springsecurity.repositories;
+package com.example.English4Kids_Backend.repositories;
 
 
-import com.revolver.springsecurity.entities.User;
+import com.example.English4Kids_Backend.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

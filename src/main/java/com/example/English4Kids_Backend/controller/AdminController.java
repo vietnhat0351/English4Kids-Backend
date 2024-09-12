@@ -1,8 +1,8 @@
-package com.revolver.springsecurity.controller;
+package com.example.English4Kids_Backend.controller;
 
-import com.revolver.springsecurity.dtos.AuthenResponse;
-import com.revolver.springsecurity.dtos.RegisterRequest;
-import com.revolver.springsecurity.services.AuthenticationService;
+import com.example.English4Kids_Backend.dtos.AuthedResponse;
+import com.example.English4Kids_Backend.dtos.RegisterRequest;
+import com.example.English4Kids_Backend.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,7 +38,7 @@ public class AdminController {
     }
     @PostMapping("/register")
     @PreAuthorize("hasAuthority('admin:create')")
-    public ResponseEntity<AuthenResponse> register(@RequestBody RegisterRequest request){
+    public ResponseEntity<AuthedResponse> register(@RequestBody RegisterRequest request){
         return ResponseEntity.ok(authenticationService.registerForAdmin(request));
     }
 }

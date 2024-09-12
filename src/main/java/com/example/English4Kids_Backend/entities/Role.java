@@ -1,4 +1,4 @@
-package com.revolver.springsecurity.entities;
+package com.example.English4Kids_Backend.entities;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.revolver.springsecurity.entities.Permission.*;
+import static com.example.English4Kids_Backend.entities.Permission.*;
 
 @RequiredArgsConstructor
 @Getter

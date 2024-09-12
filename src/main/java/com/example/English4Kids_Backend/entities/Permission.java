@@ -1,4 +1,4 @@
-package com.revolver.springsecurity.entities;
+package com.example.English4Kids_Backend.entities;
 
 
 import lombok.Getter;

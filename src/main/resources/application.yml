@@ -1,9 +1,9 @@
+
 spring:
   datasource:
-#    url: jdbc:postgresql://localhost:5432/mydb
-    url: jdbc:postgresql://0.0.0.0:5432/mydb
-    username:  admin #postgres
-    password:  admin  #123456
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -12,13 +12,30 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+          starttls:
+            enable: true
+            required: true
+        auth: true
+        starttls:
+          enabled: true
+        connection-timeout: 5000
+        timeout: 3000
+        write-timeout: 5000
 application:
   security:
     jwt:
-      secret: 254d762d256a3b3f712c3c345c372c5e535a414c2c555e6f315b793c50
+      secret: ${JWT_SECRET}
       expired:
         access:  1000000
         refresh:  2592000000
 server:
   port: 8080
-

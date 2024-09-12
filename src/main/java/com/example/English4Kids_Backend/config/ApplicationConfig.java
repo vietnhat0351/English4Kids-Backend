@@ -1,6 +1,6 @@
-package com.revolver.springsecurity.config;
+package com.example.English4Kids_Backend.config;
 
-import com.revolver.springsecurity.repositories.UserRepository;
+import com.example.English4Kids_Backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

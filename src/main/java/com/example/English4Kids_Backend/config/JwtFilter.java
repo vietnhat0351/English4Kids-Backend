@@ -1,7 +1,7 @@
-package com.revolver.springsecurity.config;
+package com.example.English4Kids_Backend.config;
 
 
-import com.revolver.springsecurity.services.JwtService;
+import com.example.English4Kids_Backend.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
