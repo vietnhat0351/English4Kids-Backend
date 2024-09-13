@@ -17,7 +17,8 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
 //        config.addAllowedOrigin("https://payment.momo.vn");
-//        config.addAllowedOrigin("http://localhost:5000");
+        config.addAllowedOrigin("http://localhost:5000");
+        config.addAllowedOrigin("http://localhost:3000");
         config.setAllowedOriginPatterns(List.of("*"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
