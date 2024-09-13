@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private  final UserService userService ;
 
-    @GetMapping
+    @GetMapping("/current")
     public ResponseEntity<UserInfo> getCurrentUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return ResponseEntity.ok(userService.getCurrentUser(authentication));
