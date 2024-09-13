@@ -16,7 +16,7 @@ jobs:
       - name: Pull the Docker image
         run: sudo docker pull vietnhat0351/english4kids:1.0
       - name: Delete the running container
-        run: sudo docker rm -f github-actions || true
+        run: sudo docker rm -f backend || true
       - name: Run the Docker container
         env:
           DB_URL: ${{secrets.DB_URL}}
