@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OPT {
+public class Otp {
     private String otp;
     private LocalDateTime expiryDate;
 }

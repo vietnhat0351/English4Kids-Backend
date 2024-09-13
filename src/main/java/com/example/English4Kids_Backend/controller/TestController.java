@@ -1,20 +1,17 @@
 package com.example.English4Kids_Backend.controller;
 
 
-import com.example.English4Kids_Backend.entities.OPT;
+import com.example.English4Kids_Backend.entities.Otp;
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -26,7 +23,7 @@ import java.util.Map;
 @Slf4j
 public class TestController {
 
-    private final Map<String, OPT> otpMap = new HashMap<>();
+    private final Map<String, Otp> otpMap = new HashMap<>();
 
 
     @RequestMapping("/hello")
@@ -43,7 +40,7 @@ public class TestController {
 //            message.setFrom("your-email@gmail.com");
         message.setTo(to);
         message.setSubject("subject");
-        OPT otp = generateOtp();
+        Otp otp = generateOtp();
         message.setText(otp.getOtp());
 
         otpMap.put(to, otp);
@@ -67,7 +64,7 @@ public class TestController {
     private static final int OTP_LENGTH = 6;
     private final SecureRandom random = new SecureRandom();
 
-    public OPT generateOtp() {
+    public Otp generateOtp() {
         // Lấy giờ hiện tại
         LocalDateTime now = LocalDateTime.now();
         StringBuilder otp = new StringBuilder(OTP_LENGTH);
@@ -75,6 +72,6 @@ public class TestController {
             otp.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
         }
 
-        return new OPT(otp.toString(), now.plusMinutes(2));
+        return new Otp(otp.toString(), now.plusMinutes(2));
     }
 }
