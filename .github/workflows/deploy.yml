@@ -18,4 +18,11 @@ jobs:
       - name: Delete the running container
         run: sudo docker rm -f github-actions || true
       - name: Run the Docker container
-        run: sudo docker run -d -p 8080:8080 --name backend vietnhat0351/english4kids:1.0
+        env:
+          DB_URL: ${{secrets.DB_URL}}
+          DB_USERNAME: ${{secrets.DB_USERNAME}}
+          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+          JWT_SECRET: ${{secrets.JWT_SECRET}}
+          MAIL_PASSWORD: ${{secrets.MAIL_PASSWORD}}
+          MAIL_USERNAME: ${{secrets.MAIL_USERNAME}}
+        run: sudo docker run -d -p 8080:8080 --name backend -e DB_URL=$DB_URL -e DB_USERNAME=$DB_USERNAME -e DB_PASSWORD=$DB_PASSWORD -e JWT_SECRET=$JWT_SECRET -e MAIL_PASSWORD=$MAIL_PASSWORD -e MAIL_USERNAME=$MAIL_USERNAME vietnhat0351/english4kids:1.0
