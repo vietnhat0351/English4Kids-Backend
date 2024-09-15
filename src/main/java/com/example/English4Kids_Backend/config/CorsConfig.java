@@ -13,17 +13,17 @@ public class CorsConfig {
 
     @Bean
     public CorsFilter corsFilter() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+        configuration.addAllowedOriginPattern("*");  // Use this to allow all origins or replace with specific origins
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+//        configuration.addExposedHeader("Authorization");  // Expose authorization header
+//        configuration.setMaxAge(3600L);  // Cache preflight requests
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-//        config.addAllowedOrigin("https://payment.momo.vn");
-        config.addAllowedOrigin("http://localhost:5000");
-        config.addAllowedOrigin("http://localhost:3000");
-        config.setAllowedOriginPatterns(List.of("*"));
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        config.addExposedHeader("ETag");
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/**", configuration);
         return new CorsFilter(source);
     }
+
 }

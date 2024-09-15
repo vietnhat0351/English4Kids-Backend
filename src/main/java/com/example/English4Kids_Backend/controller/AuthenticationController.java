@@ -2,22 +2,19 @@ package com.example.English4Kids_Backend.controller;
 
 
 
-import com.example.English4Kids_Backend.dtos.AuthedResponse;
-import com.example.English4Kids_Backend.dtos.Email;
-import com.example.English4Kids_Backend.dtos.LoginRequest;
-import com.example.English4Kids_Backend.dtos.RegisterRequest;
+import com.example.English4Kids_Backend.dtos.*;
 import com.example.English4Kids_Backend.entities.Otp;
 import com.example.English4Kids_Backend.services.AuthenticationService;
 import com.example.English4Kids_Backend.services.OtpService;
+import com.example.English4Kids_Backend.services.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -32,11 +29,19 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+    private final UserService userService;
+
     @PostMapping("/send-otp")
     public ResponseEntity<String> sendOtp(
             @RequestBody Email email
             ) throws MessagingException {
         return ResponseEntity.ok(otpService.sendEmail(email.getEmail()));
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<UserInfo> getCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return ResponseEntity.ok(userService.getCurrentUser(authentication));
     }
 
 
@@ -49,7 +54,7 @@ public class AuthenticationController {
         }
         return ResponseEntity.ok(authenticationService.register(request));
     }
-    @PostMapping("/login")
+    @PostMapping("/login1")
     public ResponseEntity<AuthedResponse> login(
             @RequestBody LoginRequest request
     ){
