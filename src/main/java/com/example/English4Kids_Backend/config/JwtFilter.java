@@ -37,15 +37,16 @@ public class JwtFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         String userEmail;
         String jwt;
-        Enumeration<String> headerNames = request.getHeaderNames(); // Lấy tất cả tên headers
 
-        StringBuilder headers = new StringBuilder();
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            String headerValue = request.getHeader(headerName);
-            headers.append(headerName).append(": ").append(headerValue).append("\n");
-        }
-        System.out.println("Headers: " + headers.toString());
+//        Enumeration<String> headerNames = request.getHeaderNames(); // Lấy tất cả tên headers
+//
+//        StringBuilder headers = new StringBuilder();
+//        while (headerNames.hasMoreElements()) {
+//            String headerName = headerNames.nextElement();
+//            String headerValue = request.getHeader(headerName);
+//            headers.append(headerName).append(": ").append(headerValue).append("\n");
+//        }
+//        System.out.println("Headers: " + headers);
 
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);

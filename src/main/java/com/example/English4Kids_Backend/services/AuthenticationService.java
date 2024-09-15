@@ -1,6 +1,6 @@
 package com.example.English4Kids_Backend.services;
 
-import com.example.English4Kids_Backend.dtos.AuthedResponse;
+import com.example.English4Kids_Backend.dtos.AuthResponse;
 import com.example.English4Kids_Backend.dtos.LoginRequest;
 import com.example.English4Kids_Backend.dtos.RegisterRequest;
 import com.example.English4Kids_Backend.entities.Role;
@@ -28,7 +28,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthedResponse register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) {
         try {
             var user = User.builder()
                     .firstName(request.getFirstName())
@@ -42,7 +42,7 @@ public class AuthenticationService {
             var jwtToken = jwtService.generateToken(savedUser);
             var refreshToken = jwtService.generateRefreshToken(savedUser);
 
-            return AuthedResponse.builder()
+            return AuthResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
                     .build();
@@ -50,7 +50,7 @@ public class AuthenticationService {
             return null;
         }
     }
-    public AuthedResponse registerForAdmin(RegisterRequest request) {
+    public AuthResponse registerForAdmin(RegisterRequest request) {
         try {
             var user = User.builder()
                     .firstName(request.getFirstName())
@@ -64,7 +64,7 @@ public class AuthenticationService {
             var jwtToken = jwtService.generateToken(savedUser);
             var refreshToken = jwtService.generateRefreshToken(savedUser);
 
-            return AuthedResponse.builder()
+            return AuthResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
                     .build();
@@ -73,7 +73,7 @@ public class AuthenticationService {
         }
     }
 
-    public AuthedResponse login(LoginRequest request) {
+    public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
@@ -81,7 +81,7 @@ public class AuthenticationService {
             User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
             var jwtToken = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(user);
-            return AuthedResponse.builder()
+            return AuthResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
                     .build();
@@ -105,7 +105,7 @@ public class AuthenticationService {
             var user = this.userRepository.findByEmail(userEmail).orElseThrow();
             if (jwtService.isTokenValid(refreshToken)) {
               var accessToken = jwtService.generateToken(user);
-              var authenResponse = AuthedResponse.builder()
+              var authenResponse = AuthResponse.builder()
                       .accessToken(accessToken)
                       .refreshToken(refreshToken)
                       .build();

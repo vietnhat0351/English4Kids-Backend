@@ -1,6 +1,6 @@
 package com.example.English4Kids_Backend.controller;
 
-import com.example.English4Kids_Backend.dtos.AuthedResponse;
+import com.example.English4Kids_Backend.dtos.AuthResponse;
 import com.example.English4Kids_Backend.dtos.RegisterRequest;
 import com.example.English4Kids_Backend.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class AdminController {
     }
     @PostMapping("/register")
     @PreAuthorize("hasAuthority('admin:create')")
-    public ResponseEntity<AuthedResponse> register(@RequestBody RegisterRequest request){
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request){
         return ResponseEntity.ok(authenticationService.registerForAdmin(request));
     }
 }
