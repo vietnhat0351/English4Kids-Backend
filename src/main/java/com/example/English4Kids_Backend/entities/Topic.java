@@ -2,6 +2,7 @@ package com.example.English4Kids_Backend.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,12 +13,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class VocabularyTopic {
+public class Topic {
     @Id
-    private long id;
+    private long topicId;
     private String name;
-    @OneToMany
-    private List<Vocabulary> vocabularies;
     private String image;
+
+    @OneToMany(mappedBy = "topic")
+    private List<Vocabulary> vocabularies;
+
 
 }
