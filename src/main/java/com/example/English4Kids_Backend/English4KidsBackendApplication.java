@@ -16,7 +16,7 @@ public class English4KidsBackendApplication {
 		SpringApplication.run(English4KidsBackendApplication.class, args);
 	}
 
-	@Bean
+//	@Bean
 	public CommandLineRunner commandLineRunner(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		return args -> {
 			// tạo một user role admin

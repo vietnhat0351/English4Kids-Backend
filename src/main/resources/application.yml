@@ -9,7 +9,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -37,7 +37,7 @@ application:
     jwt:
       secret: ${JWT_SECRET}
       expired:
-        access:  1000000
+        access:  100000000
         refresh:  2592000000
 server:
   port: 8080
