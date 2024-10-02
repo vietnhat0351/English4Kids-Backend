@@ -37,7 +37,7 @@ application:
     jwt:
       secret: ${JWT_SECRET}
       expired:
-        access:  1000000
+        access:  100000000
         refresh:  2592000000
 server:
   port: 8080

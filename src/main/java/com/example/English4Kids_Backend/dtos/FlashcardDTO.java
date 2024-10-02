@@ -1,6 +1,5 @@
-package com.example.English4Kids_Backend.entities;
+package com.example.English4Kids_Backend.dtos;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,12 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "flashcard")
-public class Flashcard {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class FlashcardDTO {
     private String word;
     private String meaning;
     private String image;

@@ -1,6 +1,5 @@
-package com.example.English4Kids_Backend.entities;
+package com.example.English4Kids_Backend.dtos.getAllFlashcardSetsByUser;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,12 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class FlashcardList {
-    @Id
+public class GAFSBU_Flashcard {
     private long id;
-    private String name;
+    private String word;
+    private String meaning;
+    private String image;
     private String description;
-    @ManyToOne
-    private User user;
 }

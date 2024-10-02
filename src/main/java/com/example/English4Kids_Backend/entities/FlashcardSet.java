@@ -5,19 +5,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "flashcard")
-public class Flashcard {
+@Table(name = "flashcard_set")
+public class FlashcardSet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String word;
-    private String meaning;
-    private String image;
-    private String audio;
-    private String category;
+    private String name;
     private String description;
+    private LocalDateTime createdAt;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Flashcard> flashcards;
+    @ManyToOne
+    private User user;
 }
