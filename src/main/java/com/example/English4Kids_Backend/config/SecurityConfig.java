@@ -67,28 +67,28 @@ public class SecurityConfig {
                         .anyRequest()
                         .authenticated()
                 )
-//                .oauth2Login(httpSecurityOAuth2LoginConfigurer -> {
-//                    httpSecurityOAuth2LoginConfigurer
-//                            .successHandler((request, response, authentication) -> {
-//                                OAuth2AuthenticationToken oAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
-//                                OAuth2User oAuth2User = oAuth2AuthenticationToken.getPrincipal();
-//
-//                                AuthResponse authResponse = oauth2Service.authenticate(oAuth2User);
-//
-//                                String script = "<script>" +
-//                                        "window.opener.postMessage({authResponse: " + Json.pretty(authResponse) + "}, 'http://localhost:3000');" +
-//                                        "window.close();" +
-//                                        "</script>";
-//
-//                                // Write the script to the response
-//                                response.setContentType("text/html");
-//                                response.getWriter().write(script);
-//
-//                            })
-//                            .failureHandler((request, response, exception) -> {
-//                                response.sendRedirect("http://localhost:3000");
-//                            });
-//                })
+                .oauth2Login(httpSecurityOAuth2LoginConfigurer -> {
+                    httpSecurityOAuth2LoginConfigurer
+                            .successHandler((request, response, authentication) -> {
+                                OAuth2AuthenticationToken oAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
+                                OAuth2User oAuth2User = oAuth2AuthenticationToken.getPrincipal();
+
+                                AuthResponse authResponse = oauth2Service.authenticate(oAuth2User);
+
+                                String script = "<script>" +
+                                        "window.opener.postMessage({authResponse: " + Json.pretty(authResponse) + "}, 'http://localhost:3000');" +
+                                        "window.close();" +
+                                        "</script>";
+
+                                // Write the script to the response
+                                response.setContentType("text/html");
+                                response.getWriter().write(script);
+
+                            })
+                            .failureHandler((request, response, exception) -> {
+                                response.sendRedirect("http://localhost:3000");
+                            });
+                })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

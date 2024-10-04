@@ -1,5 +1,6 @@
 package com.example.English4Kids_Backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -20,6 +21,7 @@ public class Topic {
     private String image;
 
     @OneToMany(mappedBy = "topic")
+    @JsonIgnore
     private List<Vocabulary> vocabularies;
 
 
