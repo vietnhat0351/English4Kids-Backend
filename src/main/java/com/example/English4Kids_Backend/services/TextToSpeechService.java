@@ -17,7 +17,7 @@ public class TextToSpeechService {
 
         try {
             // Tải thông tin xác thực từ tệp JSON
-            GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("C:\\Users\\vietn\\Downloads\\english4kids-435709-2885d357e515.json"))
+            GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("D:\\Key\\english4kids-435709-2885d357e515.json"))
                     .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
 
             // Thiết lập TextToSpeechClient với thông tin xác thực
