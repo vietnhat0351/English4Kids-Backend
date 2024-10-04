@@ -36,4 +36,9 @@ public class FlashcardController {
     public ResponseEntity<String> deleteFlashcardSetByIdIn(@RequestBody DeleteFlashcardSetByIdInReq request) {
         return ResponseEntity.ok(flashcardService.deleteFlashcardSetByIdIn(request.getIds()));
     }
+
+    @PostMapping("/update-flashcard-set/{id}")
+    public FlashcardSet updateFlashcardSet(@PathVariable long id, @RequestBody CreateFlashcardSetRequest request) {
+        return flashcardService.updateFlashcardSet(id, request);
+    }
 }
