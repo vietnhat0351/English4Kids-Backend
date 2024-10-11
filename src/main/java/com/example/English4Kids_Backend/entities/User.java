@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Builder
@@ -26,6 +27,15 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserProgress> progressList;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserScore> scoreList;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserSession> sessionList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

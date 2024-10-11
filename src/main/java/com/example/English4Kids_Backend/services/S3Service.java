@@ -12,7 +12,7 @@ import java.io.IOException;
 public class S3Service {
 
     private final AmazonS3 amazonS3;
-    private final String bucketName = "cnmzalo";
+    private final String bucketName = "english-for-kids";
 
     // Implement upload method
     public String upload(MultipartFile file) throws IOException {
