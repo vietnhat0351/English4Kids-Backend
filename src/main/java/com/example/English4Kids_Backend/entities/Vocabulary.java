@@ -13,26 +13,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "vocabularies")
 @Builder
 public class Vocabulary {
     @Id
     private long id;
     private String word;
     private String meaning;
+    private String vietnameseMeaning;
     private String pronunciation;
-    private String image;
+//    private String image;
     private String audio;
-//    private String example;
-//    private String exampleMeaning;
+
     @Enumerated(EnumType.STRING)
     private VocabularyType type;
+
     @Enumerated(EnumType.STRING)
     private VocabularyLevel level;
-//    private String category;
-//    private String description;
+
     @ManyToOne
     @JoinColumn(name = "topicId")
-
     private Topic topic;
-
 }
