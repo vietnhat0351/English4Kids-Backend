@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +24,7 @@ public class Question {
     @Enumerated(EnumType.STRING)
     private QuestionType questionType; // translation, fill_in_blank, listening, story
 
-    @Lob
+
     private String content; // The question text
 
     private String audioUrl; // For listening questions (if needed)
@@ -33,6 +35,9 @@ public class Question {
 
     @ManyToOne
     @JoinColumn(name = "part_id")
-    @JsonIgnore
     private LessonPart lessonPart;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<Answer> answers;
+
 }

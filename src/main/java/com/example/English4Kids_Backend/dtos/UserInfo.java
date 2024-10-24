@@ -1,6 +1,7 @@
 package com.example.English4Kids_Backend.dtos;
 
 import com.example.English4Kids_Backend.entities.Role;
+import com.example.English4Kids_Backend.entities.UserScore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,5 @@ public class UserInfo {
     private String lastName;
     private String email;
     private Role role;
+    private UserScore userScore;
 }

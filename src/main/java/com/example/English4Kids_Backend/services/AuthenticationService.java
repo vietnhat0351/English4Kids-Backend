@@ -5,7 +5,9 @@ import com.example.English4Kids_Backend.dtos.LoginRequest;
 import com.example.English4Kids_Backend.dtos.RegisterRequest;
 import com.example.English4Kids_Backend.entities.Role;
 import com.example.English4Kids_Backend.entities.User;
+import com.example.English4Kids_Backend.entities.UserScore;
 import com.example.English4Kids_Backend.repositories.UserRepository;
+import com.example.English4Kids_Backend.repositories.UserScoreRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +31,7 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserScoreRepository userScoreRepository;
 
     public AuthResponse register(RegisterRequest request) {
         try {
@@ -42,6 +47,15 @@ public class AuthenticationService {
             var jwtToken = jwtService.generateToken(savedUser);
             var refreshToken = jwtService.generateRefreshToken(savedUser);
 
+            UserScore us  = UserScore.builder()
+                    .dailyPoints(0)
+                    .streak(0)
+                    .totalPoints(0)
+                    .lastLearningDate(LocalDate.now())
+                    .weeklyPoints(0)
+                    .user(savedUser)
+                    .build();
+            userScoreRepository.save(us);
             return AuthResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
