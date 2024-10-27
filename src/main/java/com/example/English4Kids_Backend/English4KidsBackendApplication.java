@@ -19,7 +19,7 @@ public class English4KidsBackendApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		return args -> {
-//			 tạo một user role admin
+////			 tạo một user role admin
 //			User admin = User.builder()
 //					.firstName("admin")
 //					.lastName("admin")
@@ -28,6 +28,15 @@ public class English4KidsBackendApplication {
 //					.role(Role.ADMIN)
 //					.build();
 //			userRepository.save(admin);
+////			 tạo một user role user
+//			User user = User.builder()
+//					.firstName("user")
+//					.lastName("user")
+//					.email("foxfessor@gmail.com")
+//					.password(passwordEncoder.encode("123"))
+//					.role(Role.USER)
+//					.build();
+//			userRepository.save(user);
 		};
 	}
 

@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Vocabulary {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String word;
     private String meaning;

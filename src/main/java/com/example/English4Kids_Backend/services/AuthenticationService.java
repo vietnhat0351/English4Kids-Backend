@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
+
     public AuthResponse register(RegisterRequest request) {
         try {
             var user = User.builder()
@@ -37,6 +39,11 @@ public class AuthenticationService {
                     .password(passwordEncoder.encode(request.getPassword()))
                     .role(Role.USER)
                     .email(request.getEmail())
+                    .dailyPoints(0)
+                    .weeklyPoints(0)
+                    .totalPoints(0)
+                    .streak(0)
+                    .lastLearningDate(LocalDate.now())
                     .build();
             var savedUser = userRepository.save(user);
             var jwtToken = jwtService.generateToken(savedUser);
