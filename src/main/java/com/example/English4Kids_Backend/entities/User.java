@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,11 +29,19 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private Integer dailyPoints;
+
+    private Integer weeklyPoints;
+
+    private Integer totalPoints;
+
+    private Integer streak; // Continuous streak
+
+    private LocalDate lastLearningDate;
+
     @OneToMany(mappedBy = "user")
     private List<UserProgress> progressList;
 
-    @OneToMany(mappedBy = "user")
-    private List<UserScore> scoreList;
 
     @OneToMany(mappedBy = "user")
     private List<UserSession> sessionList;
