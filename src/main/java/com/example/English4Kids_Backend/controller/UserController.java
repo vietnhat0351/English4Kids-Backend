@@ -2,8 +2,13 @@ package com.example.English4Kids_Backend.controller;
 
 
 import com.example.English4Kids_Backend.dtos.UserInfo;
+import com.example.English4Kids_Backend.dtos.UserSessionDTO;
+import com.example.English4Kids_Backend.dtos.process.UserProcessLearning;
+import com.example.English4Kids_Backend.entities.UserProgress;
+import com.example.English4Kids_Backend.entities.UserSession;
 import com.example.English4Kids_Backend.entities.Vocabulary;
 import com.example.English4Kids_Backend.services.UserService;
+import com.example.English4Kids_Backend.services.UserSessionService;
 import com.example.English4Kids_Backend.services.VocabularyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +24,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService ;
     private final VocabularyService vocabularyService;
+    private final UserSessionService userSessionService ;
 
 //    @GetMapping("/current")
     @GetMapping("/current")
@@ -33,6 +39,21 @@ public class UserController {
     @GetMapping("/vocabularies")
     public ResponseEntity<List<Vocabulary>> getVocabularies(){
         return ResponseEntity.ok(vocabularyService.getAllVocabularies());
+    }
+
+    @GetMapping("/process/{userId}")
+    public ResponseEntity<UserProcessLearning> getUserProcessLearning(@PathVariable Integer userId) {
+        UserProcessLearning userProcessLearning = userService.getUserProcessLearning(userId);
+        return ResponseEntity.ok(userProcessLearning);
+    }
+    @PostMapping("/process/add-user-process")
+    public ResponseEntity<UserSession> saveUserProcess(@RequestBody UserSessionDTO userProgress){
+        try {
+            return ResponseEntity.ok(userSessionService.createUserSession(userProgress))  ;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
