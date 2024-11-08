@@ -28,23 +28,17 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-
     private Integer dailyPoints;
-
     private Integer weeklyPoints;
-
     private Integer totalPoints;
-
     private Integer streak; // Continuous streak
-
     private LocalDate lastLearningDate;
-
     @OneToMany(mappedBy = "user")
     private List<UserProgress> progressList;
-
-
     @OneToMany(mappedBy = "user")
     private List<UserSession> sessionList;
+    @ManyToMany(mappedBy = "users")
+    private List<FlashcardSet> flashcardSets;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

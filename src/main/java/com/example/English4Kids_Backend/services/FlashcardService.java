@@ -7,6 +7,7 @@ import com.example.English4Kids_Backend.entities.FlashcardSet;
 import com.example.English4Kids_Backend.entities.User;
 import com.example.English4Kids_Backend.mappers.FlashcardMapper;
 import com.example.English4Kids_Backend.mappers.FlashcardSetMapper;
+import com.example.English4Kids_Backend.repositories.ExtendedFlashcardSetRepository;
 import com.example.English4Kids_Backend.repositories.FlashcardRepository;
 import com.example.English4Kids_Backend.repositories.FlashcardSetRepository;
 import jakarta.transaction.Transactional;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,20 +26,21 @@ public class FlashcardService {
 
     private final FlashcardRepository flashcardRepository;
     private final FlashcardSetRepository flashcardSetRepository;
+    private final ExtendedFlashcardSetRepository extendedFlashcardSetRepository;
     private final FlashcardSetMapper flashcardSetMapper;
     private final FlashcardMapper flashcardMapper;
 
     public FlashcardSet createFlashcardSet(CreateFlashcardSetRequest request) {
         FlashcardSet flashcardSet = flashcardSetMapper.createFlashcardSetRequestToFlashcardSet(request);
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        flashcardSet.setUser(user);
+        flashcardSet.setUsers(List.of(user));
         flashcardSet.setCreatedAt(LocalDateTime.now());
         return flashcardSetRepository.save(flashcardSet);
     }
 
     public List<FlashcardSetDTO> getAllFlashcardSetsByUser() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<FlashcardSet> flashcardSets = flashcardSetRepository.findAllByUserId(user.getId());
+        List<FlashcardSet> flashcardSets = extendedFlashcardSetRepository.findAllUserId(user.getId());
         return flashcardSets.stream().map(flashcardSetMapper::flashcardSetToFlashcardSetResponse).toList();
     }
 
@@ -60,8 +63,13 @@ public class FlashcardService {
         FlashcardSet flashcardSet = flashcardSetRepository.findById(id).orElseThrow();
         flashcardSet.setName(request.getName());
         flashcardSet.setDescription(request.getDescription());
-        List<Flashcard> flashcards = request.getFlashcards().stream().map(flashcardMapper::flashcardDTOToFlashcard).collect(Collectors.toList());
+        List<Flashcard> flashcards = request.getFlashcards().stream().map(flashcardDTO -> {
+            Flashcard flashcard = flashcardMapper.flashcardDTOToFlashcard(flashcardDTO);
+            flashcard.setId(UUID.randomUUID().toString());
+            return flashcard;
+        }).collect(Collectors.toList());
         flashcardSet.setFlashcards(flashcards);
+        System.out.println(flashcardSet.getFlashcards());
         return flashcardSetRepository.save(flashcardSet);
     }
 }

@@ -8,8 +8,5 @@ import java.util.List;
 
 @Repository
 public interface FlashcardSetRepository extends JpaRepository<FlashcardSet, Long> {
-    List<FlashcardSet> findAllByUserId(long userId);
-
     int deleteByIdIn(List<Long> ids);
-
 }
