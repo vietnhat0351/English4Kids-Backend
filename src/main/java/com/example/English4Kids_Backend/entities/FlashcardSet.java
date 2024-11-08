@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,7 +22,13 @@ public class FlashcardSet {
     private String description;
     private LocalDateTime createdAt;
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "flashcard_set_id")
     private List<Flashcard> flashcards;
-    @ManyToOne
-    private User user;
+    @ManyToMany
+    @JoinTable(
+            name = "flashcard_set_user",
+            joinColumns = @JoinColumn(name = "flashcard_set_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> users;
 }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FlashcardDTO {
-    private long id;
+    private String id;
     private String word;
     private String meaning;
     private String image;

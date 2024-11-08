@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "flashcard")
 public class Flashcard {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     private String word;
     private String meaning;
     private String image;

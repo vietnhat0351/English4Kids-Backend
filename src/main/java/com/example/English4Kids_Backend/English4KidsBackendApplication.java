@@ -7,11 +7,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 
 @SpringBootApplication
+@EnableScheduling
 public class English4KidsBackendApplication {
 
 	public static void main(String[] args) {
@@ -21,7 +23,6 @@ public class English4KidsBackendApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		return args -> {
-////			 tạo một user role admin
 //			User admin = User.builder()
 //					.firstName("admin")
 //					.lastName("admin")
@@ -46,22 +47,21 @@ public class English4KidsBackendApplication {
 //					.build();
 //			userRepository.save(user);
 
-//			for (int i = 0 ;i<10 ;i++){
-//				User user = User.builder()
-//						.firstName("test")
-//						.lastName("user " + i )
-//						.email("foxfessor"+ i +"@gmail.com")
-//						.password(passwordEncoder.encode("123"))
-//						.role(Role.USER)
-//						.dailyPoints(0)
-//						.lastLearningDate(LocalDate.now())
-//						.streak(0)
-//						.weeklyPoints(0)
-//						.totalPoints(0)
-//						.build();
-//				userRepository.save(user);
-//			}
+			for (int i = 0 ;i<10 ;i++){
+				User user = User.builder()
+						.firstName("test")
+						.lastName("user " + i )
+						.email("foxfessor"+ i +"@gmail.com")
+						.password(passwordEncoder.encode("123"))
+						.role(Role.USER)
+						.dailyPoints(0)
+						.lastLearningDate(LocalDate.now())
+						.streak(0)
+						.weeklyPoints(0)
+						.totalPoints(0)
+						.build();
+				userRepository.save(user);
+			}
 		};
 	}
-
 }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GAFSBU_Flashcard {
-    private long id;
+    private String id;
     private String word;
     private String meaning;
     private String image;
