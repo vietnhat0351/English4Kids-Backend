@@ -35,4 +35,8 @@ public class Vocabulary {
     @ManyToOne
     @JoinColumn(name = "topicId")
     private Topic topic;
+
+    public Vocabulary(long id) {
+        this.id = id;
+    }
 }

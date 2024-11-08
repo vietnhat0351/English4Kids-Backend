@@ -55,5 +55,24 @@ public class UserController {
         }
         return null;
     }
+    @PostMapping("/update-user-point")
+    public ResponseEntity<UserInfo> updateUserPoint(@RequestBody UserInfo userUpdate){
+        try {
+            return ResponseEntity.ok(userService.updateUserPoint(userUpdate)) ;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @GetMapping("/get-user-ranking")
+    public ResponseEntity<List<UserInfo>> getUserRanking(){
+        try{
+            return ResponseEntity.ok(userService.getUesrRanking());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return ResponseEntity.notFound().build();
+    }
 
 }

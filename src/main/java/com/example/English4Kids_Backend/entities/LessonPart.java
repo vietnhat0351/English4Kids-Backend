@@ -32,4 +32,8 @@ public class LessonPart {
 
     @OneToMany(mappedBy = "lessonPart")
     private List<Story> stories;
+
+    public LessonPart(Long id) {
+        this.id = id;
+    }
 }
