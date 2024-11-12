@@ -27,7 +27,6 @@ public class StudyScheduleService {
     @Scheduled(fixedRate = 10000)
     public void scheduleFixedRateTask() {
         // Gửi email nhắc nhở người dùng tham gia lịch học
-        log.info("Sending email to users for study schedule");
         // lấy ra tất cả các lịch học có startTime < now
         List<StudySchedule> studySchedules = studyScheduleRepository.findAllByStartTimeBefore(LocalDateTime.now());
         studySchedules.forEach(studySchedule -> {

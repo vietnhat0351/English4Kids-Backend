@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static com.example.English4Kids_Backend.entities.Role.USER;
@@ -28,6 +29,11 @@ public class Oauth2Service {
                     .email(oAuth2User.getAttribute("email"))
                     .firstName(oAuth2User.getAttribute("given_name"))
                     .lastName(oAuth2User.getAttribute("family_name"))
+                    .dailyPoints(0)
+                    .lastLearningDate(LocalDate.now())
+                    .streak(0)
+                    .weeklyPoints(0)
+                    .totalPoints(0)
                     .role(USER)
                     .build();
             userRepository.save(user);
