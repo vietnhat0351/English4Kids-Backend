@@ -1,11 +1,11 @@
 package com.example.English4Kids_Backend.services;
 
 
-import com.example.English4Kids_Backend.dtos.TopicDTO;
-import com.example.English4Kids_Backend.entities.Topic;
+import com.example.English4Kids_Backend.dtos.lessonDTO.VocabularyDTO;
+import com.example.English4Kids_Backend.entities.Lesson;
 import com.example.English4Kids_Backend.entities.Vocabulary;
 import com.example.English4Kids_Backend.enums.VocabularyType;
-import com.example.English4Kids_Backend.repositories.TopicRespository;
+
 import com.example.English4Kids_Backend.repositories.VocabularyRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -17,43 +17,59 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class VocabularyService {
     private final VocabularyRepository vocabularyRepository;
-    private final TopicRespository topicRespository;
     private final TranslationService translationService;
 
-    public List<Vocabulary> getAllVocabularies() {
-        return vocabularyRepository.findAll();
-    }
-    public List<TopicDTO> getAllTopics() {
-        return topicRespository.findAllTopic();
-    }
-    public List<Vocabulary> getVocabulariesByTopic(Long topicId) {
-        return vocabularyRepository.findByTopicId(topicId);
-    }
-    public Topic createTopic(Topic topic) {
-        if (topic.getImage() == null || topic.getImage().equalsIgnoreCase("")){
-            topic.setImage("https://english-for-kids.s3.ap-southeast-1.amazonaws.com/trends.gif");
+    public List<VocabularyDTO> getAllVocabularies() {
+        try {
+            List<Vocabulary> vocabularies = vocabularyRepository.findAll();
+            return vocabularies.stream()
+                    .map(VocabularyDTO::new)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            return new ArrayList<>();
         }
-        topic.setVocabularies(new ArrayList<>());
-        return topicRespository.save(topic);
+
     }
-    public String deleteTopic(Long topicId) {
-        topicRespository.deleteById(topicId);
-        return "Deleted";
+
+    public Vocabulary getVocabularyById(long id) {
+        return vocabularyRepository.findById(id).orElse(null);
     }
+
+//    public List<Vocabulary> getVocabulariesByLessonId(long lessonId) {
+//
+//        Optional<List<Vocabulary>> vocabularies = Optional.ofNullable(vocabularyRepository.findByLessonId(lessonId));
+//        if(vocabularies.isPresent()){
+//            List<Vocabulary> vocabularyDTOS = new ArrayList<>();
+//            for (Vocabulary vocabulary : vocabularies.get()) {
+//                Vocabulary vocabularyDTO = Vocabulary.builder()
+//                        .id(vocabulary.getId())
+//                        .word(vocabulary.getWord())
+//                        .meaning(vocabulary.getMeaning())
+//                        .pronunciation(vocabulary.getPronunciation())
+//                        .type(vocabulary.getType())
+//                        .image(vocabulary.getImage())
+//                        .audio(vocabulary.getAudio())
+//                        .build();
+//                vocabularyDTOS.add(vocabularyDTO);
+//            }
+//            return vocabularyDTOS;
+//        }
+//        return null;
+//
+//    }
+
+
+
     public Vocabulary createVocabulary(Vocabulary vocabulary) {
-        Vocabulary vocabularies = vocabularyRepository.findByWord(vocabulary.getWord());
-        if (vocabularies != null){
-            return vocabularies;
-        }
         return vocabularyRepository.save(vocabulary);
     }
 
-    // Gọi API để lấy thông tin từ vựng từ DictionaryAPI hoặc API khác
     public Optional<Vocabulary> fetchVocabularyFromApi(String word) {
         // Giả sử đây là nơi bạn gọi API bên thứ 3
         String apiUrl = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
@@ -91,7 +107,7 @@ public class VocabularyService {
                 }
 
                 String vietnameseMeaning = translationService.translateText(wordReturned, "en", "vi");
-                vocabulary.setVietnameseMeaning(vietnameseMeaning);
+                vocabulary.setMeaning(vietnameseMeaning);
 
 
                 for (Map<String, Object> meaning : meanings) {

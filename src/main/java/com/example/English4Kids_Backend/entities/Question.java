@@ -1,43 +1,43 @@
 package com.example.English4Kids_Backend.entities;
 
+
 import com.example.English4Kids_Backend.enums.QuestionType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@Table(name = "questions")
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "question")
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private Integer id;
+    private String content;
     @Enumerated(EnumType.STRING)
-    private QuestionType questionType; // translation, fill_in_blank, listening, story
+    private QuestionType type;
+    private String image;
+    private String audio;
 
+    @ManyToOne
+    @JoinColumn(name = "lesson_id")
+    private Lesson lesson;
 
-    private String content; // The question text
-
-    private String audioUrl; // For listening questions (if needed)
+    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
+    private List<Answer> answers;
 
     @ManyToOne
     @JoinColumn(name = "vocabulary_id")
     private Vocabulary vocabulary;
-
-    @ManyToOne
-    @JoinColumn(name = "part_id")
-    private LessonPart lessonPart;
-
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<Answer> answers;
 
 }

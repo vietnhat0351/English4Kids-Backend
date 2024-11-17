@@ -1,45 +1,101 @@
 package com.example.English4Kids_Backend.controller;
 
-import com.example.English4Kids_Backend.dtos.TopicDTO;
-import com.example.English4Kids_Backend.entities.Topic;
+import com.example.English4Kids_Backend.dtos.lessonDTO.VocabularyDTO;
+import com.example.English4Kids_Backend.dtos.lessonDTO.VocabularyInput;
 import com.example.English4Kids_Backend.entities.Vocabulary;
+import com.example.English4Kids_Backend.repositories.VocabularyRepository;
 import com.example.English4Kids_Backend.services.VocabularyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/vocabulary")
 public class VocabularyController {
     private final VocabularyService vocabularyService;
+    private final VocabularyRepository vocabularyRepository;
 
-    @GetMapping("/all-topics")
-    public ResponseEntity<List<TopicDTO>> getAllTopics() {
-        return ResponseEntity.ok(vocabularyService.getAllTopics());
-    }
-    @GetMapping("/get-vocabularies-by-topic")
-    public ResponseEntity<List<Vocabulary>> getVocabulariesByTopic(@RequestParam Long topicId) {
-        System.out.println("topicId = " + topicId);
-        return ResponseEntity.ok(vocabularyService.getVocabulariesByTopic(topicId));
-    }
-    @PostMapping("/create-topic")
-    public ResponseEntity<Topic> createTopic(@RequestBody Topic topic) {
-        return ResponseEntity.ok(vocabularyService.createTopic(topic));
-    }
-    @PostMapping("/delete-topic")
-    public ResponseEntity<String> deleteTopic(@RequestParam Long topicId) {
-        return ResponseEntity.ok(vocabularyService.deleteTopic(topicId));
-    }
-    @PostMapping("/update-topic")
-    public ResponseEntity<Topic> updateTopic(@RequestBody Topic topic) {
-        return ResponseEntity.ok(vocabularyService.createTopic(topic));
-    }
     @PostMapping("/create-vocabulary")
-    public ResponseEntity<Vocabulary> createVocabulary(@RequestBody Vocabulary vocabulary) {
-        return ResponseEntity.ok(vocabularyService.createVocabulary(vocabulary));
+    public ResponseEntity<VocabularyDTO> createVocabulary(@RequestBody Vocabulary vocabulary) {
+        Vocabulary savedVocabulary = vocabularyService.createVocabulary(vocabulary);
+        return ResponseEntity.ok(new VocabularyDTO(savedVocabulary));
     }
+//    @GetMapping("/get-vocabularies-by-lesson/{lessonId}")
+//    public ResponseEntity<?> getVocabulariesByLesson(@PathVariable long lessonId) {
+//        return ResponseEntity.ok(vocabularyService.getVocabulariesByLessonId(lessonId));
+//    }
+
+    @GetMapping("/vocabularies")
+    public ResponseEntity<?> getVocabularies() {
+        return ResponseEntity.ok(vocabularyService.getAllVocabularies());
+    }
+    @GetMapping("/find-word/{word}")
+    public ResponseEntity<VocabularyInput> getVocabulary(@PathVariable String word) {
+        Vocabulary v = vocabularyRepository.findByWord(word);
+        if (v != null) {
+            VocabularyInput vocabularyInput = VocabularyInput.builder()
+                    .id(v.getId())
+                    .word(v.getWord())
+                    .meaning(v.getMeaning())
+                    .pronunciation(v.getPronunciation())
+                    .type(v.getType())
+                    .image(v.getImage())
+                    .audio(v.getAudio())
+                    .inDatabase(true)
+                    .build();
+            return ResponseEntity.ok(vocabularyInput);
+        }
+        else{try{
+            Optional<Vocabulary> vocabulary = vocabularyService.fetchVocabularyFromApi(word);
+            if (vocabulary.isPresent()) {
+                VocabularyInput vocabularyInput = VocabularyInput.builder()
+                        .id(vocabulary.get().getId())
+                        .word(vocabulary.get().getWord())
+                        .meaning(vocabulary.get().getMeaning())
+                        .pronunciation(vocabulary.get().getPronunciation())
+                        .type(vocabulary.get().getType())
+                        .image(vocabulary.get().getImage())
+                        .audio(vocabulary.get().getAudio())
+                        .inDatabase(false)
+                        .build();
+                return ResponseEntity.ok(vocabularyInput);
+
+        }
+        }catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
+
+
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @GetMapping("/find-word-fast/{word}")
+    public ResponseEntity<VocabularyInput> getVocabularyFast(@PathVariable String word) {
+        Vocabulary v = vocabularyRepository.findByWord(word);
+        VocabularyInput vocabularyInput;
+        if (v != null) {
+            vocabularyInput = VocabularyInput.builder()
+                    .id(v.getId())
+                    .word(v.getWord())
+                    .meaning(v.getMeaning())
+                    .pronunciation(v.getPronunciation())
+                    .type(v.getType())
+                    .image(v.getImage())
+                    .audio(v.getAudio())
+                    .inDatabase(true)
+                    .build();
+        } else {
+            // Trả về đối tượng với inDatabase = false nếu từ không tồn tại
+            vocabularyInput = VocabularyInput.builder()
+                    .word(word)
+                    .inDatabase(false)
+                    .build();
+        }
+        return ResponseEntity.ok(vocabularyInput);
+    }
+
 
 }

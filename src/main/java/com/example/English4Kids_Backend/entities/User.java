@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,12 +34,9 @@ public class User implements UserDetails {
     private Integer totalPoints;
     private Integer streak; // Continuous streak
     private LocalDate lastLearningDate;
-    @OneToMany(mappedBy = "user")
-    private List<UserProgress> progressList;
-    @OneToMany(mappedBy = "user")
-    private List<UserSession> sessionList;
-    @ManyToMany(mappedBy = "users")
-    private List<FlashcardSet> flashcardSets;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserLesson> userLessons = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

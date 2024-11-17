@@ -4,8 +4,6 @@ import com.example.English4Kids_Backend.dtos.UserInfo;
 import com.example.English4Kids_Backend.dtos.process.LessonProcess;
 import com.example.English4Kids_Backend.dtos.process.PartProcess;
 import com.example.English4Kids_Backend.dtos.process.UserProcessLearning;
-import com.example.English4Kids_Backend.entities.Lesson;
-import com.example.English4Kids_Backend.entities.LessonPart;
 import com.example.English4Kids_Backend.entities.Role;
 import com.example.English4Kids_Backend.entities.User;
 import com.example.English4Kids_Backend.repositories.*;
@@ -21,10 +19,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final LessonPartRepository lessonPartRepository;
-    private final UserSessionRepository userSessionRepository;
-    private final LessonRepository lessonRepository;
-    private final UserProgressRepository userProgressRepository;
 
     public UserInfo getCurrentUser(Authentication authentication) {
 
@@ -57,44 +51,7 @@ public class UserService {
 
 
     }
-    public UserProcessLearning getUserProcessLearning(Integer userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Tạo đối tượng UserProcessLearning
-        UserProcessLearning userProcessLearning = new UserProcessLearning();
-        userProcessLearning.setId(Long.valueOf(user.getId()));
-
-        List<LessonProcess> lessonProcesses = new ArrayList<>();
-
-        // Duyệt qua từng Lesson và tạo LessonProcess
-        for (Lesson lesson : lessonRepository.findAll()) {
-            LessonProcess lessonProcess = new LessonProcess();
-            lessonProcess.setId(lesson.getId());
-            lessonProcess.setTitle(lesson.getTitle());
-
-            List<PartProcess> partProcesses = new ArrayList<>();
-
-            // Duyệt qua từng LessonPart của lesson và tạo PartProcess
-            for (LessonPart lessonPart : lesson.getLessonParts()) {
-                PartProcess partProcess = new PartProcess();
-                partProcess.setId(lessonPart.getId());
-                partProcess.setPartNumber(lessonPart.getPartNumber());
-
-                // Đếm số lần học mà user đã hoàn thành cho lessonPart này
-                Integer sessionCount = userSessionRepository.countUserSessionsByUserAndLessonPart(user, lessonPart);
-                partProcess.setTime(sessionCount); // số lần user đã thực hiện session cho part
-
-                partProcesses.add(partProcess);
-            }
-
-            lessonProcess.setParts(partProcesses);
-            lessonProcesses.add(lessonProcess);
-        }
-
-        userProcessLearning.setLessonProcesses(lessonProcesses);
-        return userProcessLearning;
-    }
 
 
     public UserInfo updateUserPoint(UserInfo userUpdate) {

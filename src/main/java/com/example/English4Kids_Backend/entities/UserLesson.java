@@ -1,19 +1,21 @@
 package com.example.English4Kids_Backend.entities;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@Table(name = "user_progress")
 @Builder
-public class UserProgress {
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "user_lesson",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "lesson_id"})})
+public class UserLesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,11 +25,11 @@ public class UserProgress {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "part_id")
-    private LessonPart lessonPart;
+    @JoinColumn(name = "lesson_id")
+    private Lesson lesson;
 
-    private Integer sessionNumber; // Number of completed sessions (up to 3)
-
-    private Boolean isCompleted;
+//    private LocalDate lastAccessed;
+    private Double score;
 
 }
+

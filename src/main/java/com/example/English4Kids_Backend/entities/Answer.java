@@ -1,30 +1,30 @@
 package com.example.English4Kids_Backend.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@Table(name = "answers")
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "answer")
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private Integer id;
     private String content;
-
-    private boolean isCorrect;
-
+    private String image;
+    private String audio;
+    private Boolean isCorrect;
     @ManyToOne
     @JoinColumn(name = "question_id")
-    @JsonIgnore
+    @JsonBackReference
     private Question question;
 }
