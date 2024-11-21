@@ -102,4 +102,12 @@ public class StudyScheduleService {
         studyScheduleRepository.save(studySchedule);
     }
 
+    public StudySchedule findByUserId(long userId) {
+        List<StudySchedule> studySchedules = studyScheduleRepository.findAll();
+        return studySchedules.stream()
+                .filter(s -> s.getUsers().stream().anyMatch(u -> u.getId() == userId))
+                .findFirst()
+                .orElse(null);
+    }
+
 }

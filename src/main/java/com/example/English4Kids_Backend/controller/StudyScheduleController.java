@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -31,5 +32,11 @@ public class StudyScheduleController {
     public ResponseEntity<Void> deleteStudySchedule(@RequestParam long studyScheduleId) {
         studyScheduleService.delete(studyScheduleId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/find-by-userId")
+    public LocalDateTime findStudyScheduleById(@RequestParam long userId) {
+        StudySchedule studySchedule = studyScheduleService.findByUserId(userId);
+        return studySchedule.getStartTime();
     }
 }
