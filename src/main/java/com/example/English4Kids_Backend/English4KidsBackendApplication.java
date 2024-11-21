@@ -53,17 +53,7 @@ public class English4KidsBackendApplication {
 		return args -> {
 
 
-//			for (int i = 0 ;i<10 ;i++){
-//				Vocabulary vocabulary = Vocabulary.builder()
-//						.word("test" + i)
-//						.meaning("nghĩa của test " + i)
-//						.pronunciation("phiên âm của test " + i)
-//						.type(VocabularyType.NOUN)
-//						.image("https://english-for-kids.s3.ap-southeast-1.amazonaws.com/2ab2687b90ec0af507f862d76b94b08f.jpg")
-//						.audio("https://english-for-kids.s3.ap-southeast-1.amazonaws.com/pronunciation_en_skill.mp3")
-//						.build();
-//				vocabularyRepository.save(vocabulary);
-//			}
+
 //			User admin = User.builder()
 //					.firstName("admin")
 //					.lastName("admin")
@@ -75,8 +65,8 @@ public class English4KidsBackendApplication {
 ////			 tạo một user role user
 //
 //			User user = User.builder()
-//					.firstName("user")
-//					.lastName("user")
+//					.firstName("Hồng")
+//					.lastName("Phúc")
 //					.email("foxfessor@gmail.com")
 //					.password(passwordEncoder.encode("123"))
 //					.role(Role.USER)

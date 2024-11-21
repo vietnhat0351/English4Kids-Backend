@@ -2,6 +2,7 @@ package com.example.English4Kids_Backend.services;
 
 import com.example.English4Kids_Backend.dtos.lessonDTO.*;
 import com.example.English4Kids_Backend.entities.Lesson;
+import com.example.English4Kids_Backend.entities.UserLesson;
 import com.example.English4Kids_Backend.repositories.LessonRepository;
 import com.example.English4Kids_Backend.repositories.UserLessonRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,64 +32,87 @@ public class LessonService {
 
     }
     public List<LessonCompletionDTO> getLessonsWithCompletionStatus(Long userId) {
+
         List<Lesson> lessons = lessonRepository.findAll();
-        List<Long> completedLessonIds = userLessonRepository.findLessonIdsByUserId(userId);
+        return lessons.stream().map(lesson -> {
+            // Tìm UserLesson tương ứng (nếu có)
+            Optional<UserLesson> userLessonOpt = userLessonRepository.findByUserIdAndLessonId(Math.toIntExact(userId), lesson.getId());
 
-        // Map each lesson to the DTO, including vocabularies and questions
-        return lessons.stream()
-                .map(lesson -> new LessonCompletionDTO(
-                        lesson.getId(),
-                        lesson.getTitle(),
-                        lesson.getDescription(),
-                        lesson.getImage(),
-                        completedLessonIds.contains(lesson.getId()), // Check if completed
-                        // Map vocabularies to VocabularyDTO
-                        lesson.getVocabularies().stream()
-                                .map(vocab -> new VocabularyDTO(
-                                        vocab.getId(),
-                                        vocab.getWord(),
-                                        vocab.getMeaning(), vocab.getPronunciation(), vocab.getType(),
-                                        vocab.getAudio(),
-                                        vocab.getImage()
-                                       ))
-                                .collect(Collectors.toList()),
+            // Tạo DTO
+            return LessonCompletionDTO.builder()
+                    .id(lesson.getId())
+                    .title(lesson.getTitle())
+                    .description(lesson.getDescription())
+                    .image(lesson.getImage())
+                    .completed(userLessonOpt.isPresent()) // true nếu UserLesson tồn tại
+                    .score(userLessonOpt.map(UserLesson::getScore).orElse(null)) // Lấy score nếu có
+                    .vocabularies(lesson.getVocabularies().stream()
+                            .map(vocabulary -> VocabularyDTO.builder()
+                                    .id(vocabulary.getId())
+                                    .word(vocabulary.getWord())
+                                    .meaning(vocabulary.getMeaning())
+                                    .image(vocabulary.getImage())
+                                    .audio(vocabulary.getAudio())
+                                    .type(vocabulary.getType())
+                                    .pronunciation(vocabulary.getPronunciation())
+                                    .build())
+                            .collect(Collectors.toList()))
+                    .questions(lesson.getQuestions().stream()
+                            .map(question -> QuestionDTO.builder()
+                                    .id(question.getId())
+                                    .content(question.getContent())
+                                    .image(question.getImage())
+                                    .audio(question.getAudio())
 
-                        lesson.getQuestions().stream()
-                                .map(question -> new QuestionDTO(
-                                        question.getId(),
-                                        question.getContent(),
-                                        question.getType(),
-                                        question.getImage(),
-                                        question.getAudio(),
-                                        question.getAnswers().stream()
-                                                .map(answer -> new AnswerDTO(
-                                                        answer.getId(),
-                                                        answer.getContent(),
-                                                        answer.getImage(),
-                                                        answer.getAudio(),
-                                                        answer.getIsCorrect()
-                                                ))
-                                                .collect(Collectors.toList())
+                                    .build())
+                            .collect(Collectors.toList()))
+                    .build();
+        }).collect(Collectors.toList());
 
-                                        , question.getVocabulary() == null ? null : new VocabularyDTO(
-                                                question.getVocabulary().getId(),
-                                                question.getVocabulary().getWord(),
-                                                question.getVocabulary().getMeaning(),
-                                                question.getVocabulary().getPronunciation(),
-                                                question.getVocabulary().getType(),
-                                                question.getVocabulary().getAudio(),
-                                                question.getVocabulary().getImage())
 
-                                ))
-                                .collect(Collectors.toList())
-                ))
-                .collect(Collectors.toList());
+
+
     }
 
     public LessonDTO getLessonById(long id) {
         Lesson lesson = lessonRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Lesson not found with id: " + id));
         return new LessonDTO(lesson);
+    }
+    public LessonCompletionDTO getLessonByIdUser(long id, long userId) {
+        Optional<UserLesson> userLessonOpt = userLessonRepository.findByUserIdAndLessonId(Math.toIntExact(userId), id);
+
+
+        Lesson lesson = lessonRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Lesson not found with id: " + id));
+
+        return LessonCompletionDTO.builder()
+                .id(lesson.getId())
+                .title(lesson.getTitle())
+                .description(lesson.getDescription())
+                .image(lesson.getImage())
+                .completed(userLessonOpt.isPresent()) // true nếu UserLesson tồn tại
+                .score(userLessonOpt.map(UserLesson::getScore).orElse(null)) // Lấy score nếu có
+                .vocabularies(lesson.getVocabularies().stream()
+                        .map(vocabulary -> VocabularyDTO.builder()
+                                .id(vocabulary.getId())
+                                .word(vocabulary.getWord())
+                                .meaning(vocabulary.getMeaning())
+                                .image(vocabulary.getImage())
+                                .audio(vocabulary.getAudio())
+                                .type(vocabulary.getType())
+                                .pronunciation(vocabulary.getPronunciation())
+                                .build())
+                        .collect(Collectors.toList()))
+                .questions(lesson.getQuestions().stream()
+                        .map(question -> QuestionDTO.builder()
+                                .id(question.getId())
+                                .content(question.getContent())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build();
+
+
     }
 
     public LessonDTO createLesson(LessonDTO lessonDTO) {

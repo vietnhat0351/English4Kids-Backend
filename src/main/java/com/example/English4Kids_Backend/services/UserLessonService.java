@@ -20,7 +20,7 @@ public class UserLessonService {
     private final UserLessonRepository userLessonRepository;
 
     public void addOrUpdateUserLesson(UserLessonRequestDTO dto) {
-        Optional<UserLesson> existingUserLesson = userLessonRepository.findByUserIdAndLessonId(dto.getUserId(), dto.getLessonId());
+        Optional<UserLesson> existingUserLesson = userLessonRepository.findByUserIdAndLessonId(Math.toIntExact(Long.valueOf(dto.getUserId())), dto.getLessonId());
 
         if (existingUserLesson.isPresent()) {
             UserLesson userLesson = existingUserLesson.get();
@@ -39,4 +39,5 @@ public class UserLessonService {
             userLessonRepository.save(newUserLesson);
         }
     }
+
 }

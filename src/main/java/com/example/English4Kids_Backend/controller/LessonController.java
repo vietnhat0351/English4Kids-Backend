@@ -52,6 +52,15 @@ public class LessonController {
         LessonDTO lesson = lessonService.getLessonById(id);
         return ResponseEntity.ok(lesson);
     }
+    @GetMapping("/get-lesson/{id}")
+    public ResponseEntity<LessonCompletionDTO> getLessonByIdUser(@PathVariable long id) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserInfo user = userService.getCurrentUser(authentication);
+
+        LessonCompletionDTO lesson = lessonService.getLessonByIdUser( id,user.getId());
+        return ResponseEntity.ok(lesson);
+    }
     @PostMapping("/create")
     public ResponseEntity<LessonDTO> createLesson(@RequestBody LessonDTO lessonDTO) {
         LessonDTO createdLesson = lessonService.createLesson(lessonDTO);

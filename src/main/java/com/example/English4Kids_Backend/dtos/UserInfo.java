@@ -18,7 +18,9 @@ public class UserInfo {
     private String firstName;
     private String lastName;
     private String email;
+    private String avatar;
     private Role role;
+
 
     private Integer dailyPoints;
 

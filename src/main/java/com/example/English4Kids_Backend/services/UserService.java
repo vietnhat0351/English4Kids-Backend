@@ -1,9 +1,6 @@
 package com.example.English4Kids_Backend.services;
 
 import com.example.English4Kids_Backend.dtos.UserInfo;
-import com.example.English4Kids_Backend.dtos.process.LessonProcess;
-import com.example.English4Kids_Backend.dtos.process.PartProcess;
-import com.example.English4Kids_Backend.dtos.process.UserProcessLearning;
 import com.example.English4Kids_Backend.entities.Role;
 import com.example.English4Kids_Backend.entities.User;
 import com.example.English4Kids_Backend.repositories.*;
@@ -35,6 +32,7 @@ public class UserService {
                             .email(current.getEmail())
                             .firstName(current.getFirstName())
                             .lastName(current.getLastName())
+                            .avatar(current.getAvatar())
                             .role(current.getRole())
                             .dailyPoints(current.getDailyPoints())
                             .weeklyPoints(current.getWeeklyPoints())
@@ -89,6 +87,19 @@ public class UserService {
             userInfoList.add(userInfo);
         }
         return userInfoList;
+
+    }
+
+    public UserInfo updateUserInfo(UserInfo userUpdate) {
+        Optional<User> currentUser = userRepository.findById(Math.toIntExact(userUpdate.getId()));
+        if(currentUser.isPresent()){
+            User user = currentUser.get();
+            user.setFirstName(userUpdate.getFirstName());
+            user.setLastName(userUpdate.getLastName());
+            user.setAvatar(userUpdate.getAvatar());
+            userRepository.save(user);
+        }
+        return userUpdate;
 
     }
 };

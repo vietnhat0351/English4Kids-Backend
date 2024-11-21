@@ -18,6 +18,7 @@ public class LessonCompletionDTO {
     private String description;
     private String image;
     private boolean completed; // true if the user has completed the lesson
+    private Double score;
     private List<VocabularyDTO> vocabularies;
     private List<QuestionDTO> questions;
 

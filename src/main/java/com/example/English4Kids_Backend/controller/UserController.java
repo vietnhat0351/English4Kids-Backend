@@ -3,8 +3,10 @@ package com.example.English4Kids_Backend.controller;
 
 import com.example.English4Kids_Backend.dtos.UserInfo;
 import com.example.English4Kids_Backend.dtos.lessonDTO.VocabularyDTO;
+import com.example.English4Kids_Backend.dtos.userDTO.UserVocabularyRequest;
 import com.example.English4Kids_Backend.entities.Vocabulary;
 import com.example.English4Kids_Backend.services.UserService;
+import com.example.English4Kids_Backend.services.UserVocabularyService;
 import com.example.English4Kids_Backend.services.VocabularyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService ;
     private final VocabularyService vocabularyService;
+    private final UserVocabularyService userVocabularyService;
 
 //    @GetMapping("/current")
     @GetMapping("/current")
@@ -48,6 +51,15 @@ public class UserController {
         }
         return ResponseEntity.notFound().build();
     }
+    @PostMapping("/update-user-info")
+    public ResponseEntity<UserInfo> updateUserInfo(@RequestBody UserInfo userUpdate){
+        try {
+            return ResponseEntity.ok(userService.updateUserInfo(userUpdate)) ;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return ResponseEntity.notFound().build();
+    }
     @GetMapping("/get-user-ranking")
     public ResponseEntity<List<UserInfo>> getUserRanking(){
         try{
@@ -57,6 +69,24 @@ public class UserController {
             e.printStackTrace();
         }
         return ResponseEntity.notFound().build();
+    }
+    @PostMapping("/update-user-vocabulary")
+    public ResponseEntity<?> studyVocabulary(@RequestBody UserVocabularyRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserInfo user = userService.getCurrentUser(authentication);
+
+        userVocabularyService.userStudiedVocabulary(Math.toIntExact(user.getId()), request.getVocabularyId());
+
+        return ResponseEntity.ok("Vocabulary study record updated successfully.");
+    }
+
+    @GetMapping("/voca-count")
+    public ResponseEntity<Long> getVocabularyCount() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserInfo user = userService.getCurrentUser(authentication);
+
+        Long count = userVocabularyService.countVocabulariesByUserId(Math.toIntExact(user.getId()));
+        return ResponseEntity.ok(count);
     }
 
 }

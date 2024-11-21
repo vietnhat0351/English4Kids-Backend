@@ -9,5 +9,6 @@ public enum VocabularyType {
     PREPOSITION,
     CONJUNCTION,
     INTERJECTION,
+    EXCLAMATION,
     UNKNOWN
 }

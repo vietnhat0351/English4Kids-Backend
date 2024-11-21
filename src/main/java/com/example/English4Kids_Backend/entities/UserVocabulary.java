@@ -14,7 +14,8 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user_vocabulary")
+@Table(name = "user_vocabulary",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "vocabulary_id"}))
 public class UserVocabulary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
