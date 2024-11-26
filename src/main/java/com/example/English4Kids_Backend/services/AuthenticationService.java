@@ -40,32 +40,11 @@ public class AuthenticationService {
                     .role(Role.USER)
                     .email(request.getEmail())
                     .dailyPoints(0)
+                    .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
                     .weeklyPoints(0)
                     .totalPoints(0)
                     .streak(0)
                     .lastLearningDate(LocalDate.now())
-                    .build();
-            var savedUser = userRepository.save(user);
-            var jwtToken = jwtService.generateToken(savedUser);
-            var refreshToken = jwtService.generateRefreshToken(savedUser);
-
-            return AuthResponse.builder()
-                    .accessToken(jwtToken)
-                    .refreshToken(refreshToken)
-                    .build();
-        }catch (Exception e){
-            return null;
-        }
-    }
-    public AuthResponse registerForAdmin(RegisterRequest request) {
-        try {
-            var user = User.builder()
-                    .firstName(request.getFirstName())
-                    .lastName(request.getLastName())
-                    .email(request.getEmail())
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .role(request.getRole())
-                    .email(request.getEmail())
                     .build();
             var savedUser = userRepository.save(user);
             var jwtToken = jwtService.generateToken(savedUser);

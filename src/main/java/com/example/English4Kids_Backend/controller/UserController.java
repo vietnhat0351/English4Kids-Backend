@@ -1,6 +1,7 @@
 package com.example.English4Kids_Backend.controller;
 
 
+import com.example.English4Kids_Backend.dtos.ChangePasswordRequest;
 import com.example.English4Kids_Backend.dtos.UserInfo;
 import com.example.English4Kids_Backend.dtos.lessonDTO.VocabularyDTO;
 import com.example.English4Kids_Backend.dtos.userDTO.UserVocabularyRequest;
@@ -87,6 +88,17 @@ public class UserController {
 
         Long count = userVocabularyService.countVocabulariesByUserId(Math.toIntExact(user.getId()));
         return ResponseEntity.ok(count);
+    }
+
+    // đổi mật khẩu
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request){
+        try {
+            return ResponseEntity.ok(userService.changePassword(request)) ;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }

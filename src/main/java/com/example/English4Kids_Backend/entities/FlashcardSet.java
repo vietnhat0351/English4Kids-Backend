@@ -23,6 +23,9 @@ public class FlashcardSet {
     private LocalDateTime createdAt;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "flashcard_set_id")
+    private List<CardMatchingRecord> cardMatchingRecords;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "flashcard_set_id")
     private List<Flashcard> flashcards;
     @ManyToMany
     @JoinTable(

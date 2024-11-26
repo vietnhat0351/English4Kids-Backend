@@ -2,6 +2,9 @@ package com.example.English4Kids_Backend.controller;
 
 import com.example.English4Kids_Backend.dtos.CreateFlashcardSetRequest;
 import com.example.English4Kids_Backend.dtos.DeleteFlashcardSetByIdInReq;
+import com.example.English4Kids_Backend.dtos.UpdateCardMatchingRecordRequest;
+import com.example.English4Kids_Backend.dtos.UserCardMatchingRecords;
+import com.example.English4Kids_Backend.entities.CardMatchingRecord;
 import com.example.English4Kids_Backend.entities.FlashcardSet;
 import com.example.English4Kids_Backend.dtos.getAllFlashcardSetsByUser.*;
 import com.example.English4Kids_Backend.services.FlashcardService;
@@ -40,5 +43,15 @@ public class FlashcardController {
     @PostMapping("/update-flashcard-set/{id}")
     public FlashcardSet updateFlashcardSet(@PathVariable long id, @RequestBody CreateFlashcardSetRequest request) {
         return flashcardService.updateFlashcardSet(id, request);
+    }
+
+    @PostMapping("/update-card-matching-record/{flashcardSetID}")
+    public FlashcardSet updateCardMatchingRecord(@PathVariable long flashcardSetID, @RequestBody UpdateCardMatchingRecordRequest data) {
+        return flashcardService.updateCardMatchingRecord(flashcardSetID, data);
+    }
+
+    @GetMapping("/get-user-card-matching-record/{userID}")
+    public List<UserCardMatchingRecords> getUserCardMatchingRecord(@PathVariable long userID) {
+        return flashcardService.getUserCardMatchingRecord(userID);
     }
 }

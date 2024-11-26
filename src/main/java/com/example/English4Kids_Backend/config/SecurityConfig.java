@@ -84,10 +84,10 @@ public class SecurityConfig {
                                 response.setContentType("text/html");
                                 response.getWriter().write(script);
 
-                            })
-                            .failureHandler((request, response, exception) -> {
-                                response.sendRedirect("http://localhost:3000");
                             });
+//                            .failureHandler((request, response, exception) -> {
+//                                response.sendRedirect("http://localhost:3000");
+//                            });
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

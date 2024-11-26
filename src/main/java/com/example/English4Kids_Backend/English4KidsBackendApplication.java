@@ -48,12 +48,9 @@ public class English4KidsBackendApplication {
 //		return 1;
 //	}
 
-	@Bean
+//	@Bean
 	public CommandLineRunner commandLineRunner(LessonRepository lessonRepository , VocabularyRepository vocabularyRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		return args -> {
-
-
-
 //			User admin = User.builder()
 //					.firstName("admin")
 //					.lastName("admin")
@@ -78,21 +75,21 @@ public class English4KidsBackendApplication {
 //					.build();
 //			userRepository.save(user);
 //
-//			for (int i = 0 ;i<10 ;i++){
-//				User user1 = User.builder()
-//						.firstName("Hồng")
-//						.lastName("Phúc " + i )
-//						.email("foxfessor"+ i +"@gmail.com")
-//						.password(passwordEncoder.encode("123"))
-//						.role(Role.USER)
-//						.dailyPoints(0)
-//						.lastLearningDate(LocalDate.now())
-//						.streak(0)
-//						.weeklyPoints(i*100)
-//						.totalPoints(0)
-//						.build();
-//				userRepository.save(user1);
-//			}
+			for (int i = 0 ;i<10 ;i++){
+				User user1 = User.builder()
+						.firstName("Hồng")
+						.lastName("Phúc " + i )
+						.email("foxfessor"+ i +"@gmail.com")
+						.password(passwordEncoder.encode("123"))
+						.role(Role.USER)
+						.dailyPoints(0)
+						.lastLearningDate(LocalDate.now())
+						.streak(0)
+						.weeklyPoints(i*100)
+						.totalPoints(0)
+						.build();
+				userRepository.save(user1);
+			}
 		};
 	}
 }
