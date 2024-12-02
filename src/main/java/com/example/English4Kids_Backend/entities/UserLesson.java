@@ -13,8 +13,9 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user_lesson",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "lesson_id"})})
+@Table(name = "user_lesson"
+//        ,uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "lesson_id"})}
+)
 public class UserLesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +29,14 @@ public class UserLesson {
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
 
-//    private LocalDate lastAccessed;
+    private String type;
+
+    private LocalDate date;
+    private int time;
+
     private Double score;
+
+    private boolean isDone;
 
 }
 

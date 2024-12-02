@@ -24,72 +24,196 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class English4KidsBackendApplication {
 
-	private final LessonRepository lessonRepository;
-	private final VocabularyRepository vocabularyRepository;
-	private final UserRepository userRepository;
+    private final LessonRepository lessonRepository;
+    private final VocabularyRepository vocabularyRepository;
+    private final UserRepository userRepository;
 
-	public static void main(String[] args) {
-		SpringApplication.run(English4KidsBackendApplication.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(English4KidsBackendApplication.class, args);
 
-	}
-//	@Bean
-//	@Transactional
-//	public int addVocabularyToLesson() {
-//		Lesson lesson = lessonRepository.findById(1L)
-//				.orElseThrow(() -> new EntityNotFoundException("Lesson not found"));
-//
-//		Vocabulary vocabulary = vocabularyRepository.findById(1L)
-//				.orElseThrow(() -> new EntityNotFoundException("Vocabulary not found"));
-//
-//		lesson.getVocabularies().add(vocabulary);
-//		vocabulary.getLessons().add(lesson);
-//
-//		lessonRepository.save(lesson);
-//		return 1;
-//	}
+    }
 
-//	@Bean
-	public CommandLineRunner commandLineRunner(LessonRepository lessonRepository , VocabularyRepository vocabularyRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
-		return args -> {
-//			User admin = User.builder()
-//					.firstName("admin")
-//					.lastName("admin")
-//					.email("vohongphuc57371@gmail.com")
-//					.password(passwordEncoder.encode("123"))
-//					.role(Role.ADMIN)
-//					.build();
-//			userRepository.save(admin);
-////			 tạo một user role user
-//
-//			User user = User.builder()
-//					.firstName("Hồng")
-//					.lastName("Phúc")
-//					.email("foxfessor@gmail.com")
-//					.password(passwordEncoder.encode("123"))
-//					.role(Role.USER)
-//					.dailyPoints(0)
-//					.lastLearningDate(LocalDate.now())
-//					.streak(0)
-//					.weeklyPoints(0)
-//					.totalPoints(0)
-//					.build();
-//			userRepository.save(user);
-//
-			for (int i = 0 ;i<10 ;i++){
-				User user1 = User.builder()
-						.firstName("Hồng")
-						.lastName("Phúc " + i )
-						.email("foxfessor"+ i +"@gmail.com")
-						.password(passwordEncoder.encode("123"))
-						.role(Role.USER)
-						.dailyPoints(0)
-						.lastLearningDate(LocalDate.now())
-						.streak(0)
-						.weeklyPoints(i*100)
-						.totalPoints(0)
-						.build();
-				userRepository.save(user1);
-			}
-		};
-	}
+//    @Bean
+    public CommandLineRunner commandLineRunner(LessonRepository lessonRepository, VocabularyRepository vocabularyRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        return args -> {
+            User admin = User.builder()
+                    .firstName("Hồng")
+                    .lastName("Phúc")
+                    .email("vohongphuc57371@gmail.com")
+                    .password(passwordEncoder.encode("123"))
+                    .role(Role.ADMIN)
+                    .build();
+            userRepository.save(admin);
+//			 tạo một user role user
+
+            User user = User.builder()
+                    .firstName("Đặng")
+                    .lastName("Mai Hương")
+                    .email("foxfessor@gmail.com")
+                    .password(passwordEncoder.encode("123"))
+                    .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
+                    .role(Role.USER)
+                    .dailyPoints(0)
+                    .lastLearningDate(LocalDate.now())
+                    .streak(0)
+                    .weeklyPoints(0)
+                    .totalPoints(0)
+                    .build();
+            userRepository.save(user);
+
+
+            User user1 = User.builder()
+                    .firstName("Võ")
+                    .lastName("Thanh Tịnh")
+                    .email("foxfessor1" + "@gmail.com")
+                    .password(passwordEncoder.encode("123"))
+                    .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
+                    .role(Role.USER)
+                    .dailyPoints(0)
+                    .lastLearningDate(LocalDate.now())
+                    .streak(0)
+                    .weeklyPoints(100)
+                    .totalPoints(0)
+                    .build();
+            userRepository.save(user1);
+
+            User user2 = User.builder()
+                    .firstName("Phạm")
+                    .lastName("Hùng Cường")
+                    .email("hungcuong" + "@gmail.com")
+                    .password(passwordEncoder.encode("123"))
+                    .role(Role.USER)
+                    .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
+                    .dailyPoints(0)
+                    .lastLearningDate(LocalDate.now())
+                    .streak(0)
+                    .weeklyPoints(200)
+                    .totalPoints(200)
+                    .build();
+            userRepository.save(user2);
+
+            User user3 = User.builder()
+                    .firstName("Ngô Trần")
+                    .lastName("Yến Nhi")
+                    .email("yennhi" + "@gmail.com")
+                    .password(passwordEncoder.encode("123"))
+                    .role(Role.USER)
+                    .dailyPoints(0)
+                    .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
+                    .lastLearningDate(LocalDate.now())
+                    .streak(0)
+                    .weeklyPoints(300)
+                    .totalPoints(300)
+                    .build();
+            userRepository.save(user3);
+
+            User user4 = User.builder()
+                    .firstName("Đàm")
+                    .lastName("Huy Hoàng")
+                    .email("huyhoang" + "@gmail.com")
+                    .password(passwordEncoder.encode("123"))
+                    .role(Role.USER)
+                    .dailyPoints(0)
+                    .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
+                    .lastLearningDate(LocalDate.now())
+                    .streak(0)
+                    .weeklyPoints(400)
+                    .totalPoints(400)
+                    .build();
+            userRepository.save(user4);
+
+            User user5 = User.builder()
+                    .firstName("Nguyễn")
+                    .lastName("Thu Trâm")
+                    .email("chautam" + "@gmail.com")
+                    .password(passwordEncoder.encode("123"))
+                    .role(Role.USER)
+                    .dailyPoints(0)
+                    .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
+                    .lastLearningDate(LocalDate.now())
+                    .streak(0)
+                    .weeklyPoints(50)
+                    .totalPoints(500)
+                    .build();
+            userRepository.save(user5);
+
+            User user6 = User.builder()
+                    .firstName("Lê Dương")
+                    .lastName("Phương Thảo")
+                    .email("phuongthao" + "@gmail.com")
+                    .password(passwordEncoder.encode("123"))
+                    .role(Role.USER)
+                    .dailyPoints(0)
+                    .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
+                    .lastLearningDate(LocalDate.now())
+                    .streak(0)
+                    .weeklyPoints(60)
+                    .totalPoints(600)
+                    .build();
+            userRepository.save(user6);
+
+            User user7 = User.builder()
+                    .firstName("Phan")
+                    .lastName("Vĩnh Phú")
+                    .email("vinhphu" + "@gmail.com")
+                    .password(passwordEncoder.encode("123"))
+                    .role(Role.USER)
+                    .dailyPoints(0)
+                    .lastLearningDate(LocalDate.now())
+                    .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
+                    .streak(0)
+                    .weeklyPoints(70)
+                    .totalPoints(700)
+                    .build();
+            userRepository.save(user7);
+
+            User user8 = User.builder()
+                    .firstName("Trịnh")
+                    .lastName("Tấn Thành")
+                    .email("tanthanh" + "@gmail.com")
+                    .password(passwordEncoder.encode("123"))
+                    .role(Role.USER)
+                    .dailyPoints(0)
+                    .lastLearningDate(LocalDate.now())
+                    .streak(0)
+                    .weeklyPoints(80)
+                    .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
+                    .totalPoints(800)
+                    .build();
+            userRepository.save(user8);
+
+            User user9 = User.builder()
+                    .firstName("Phan")
+                    .lastName("Thị Hà Trúc")
+                    .email("hatruc" + "@gmail.com")
+                    .password(passwordEncoder.encode("123"))
+                    .role(Role.USER)
+                    .dailyPoints(0)
+                    .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
+                    .lastLearningDate(LocalDate.now())
+                    .streak(0)
+                    .weeklyPoints(90)
+                    .totalPoints(900)
+                    .build();
+            userRepository.save(user9);
+
+            User user10 = User.builder()
+                    .firstName("Nguyễn")
+                    .lastName("Huỳnh Giao")
+                    .email("huynhgiao" + "@gmail.com")
+                    .password(passwordEncoder.encode("123"))
+                    .role(Role.USER)
+                    .dailyPoints(0)
+                    .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
+                    .lastLearningDate(LocalDate.now())
+                    .streak(0)
+                    .weeklyPoints(100)
+                    .totalPoints(1000)
+                    .build();
+            userRepository.save(user10);
+
+
+
+        };
+    }
 }

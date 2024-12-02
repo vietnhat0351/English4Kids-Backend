@@ -18,5 +18,8 @@ public interface UserLessonRepository extends JpaRepository<UserLesson, Long> {
 
 
     @Query("SELECT ul FROM UserLesson ul WHERE ul.user.id = :userId AND ul.lesson.id = :lessonId")
-    Optional<UserLesson> findByUserIdAndLessonId(@Param("userId") Integer userId, @Param("lessonId") Long lessonId);
+    List<UserLesson> findByUserIdAndLessonId(@Param("userId") Integer userId, @Param("lessonId") Long lessonId);
+
+    @Query("SELECT COUNT(ul) FROM UserLesson ul WHERE ul.user.id = :userId")
+    int countLessonsByUserId(@Param("userId") Integer userId);
 }

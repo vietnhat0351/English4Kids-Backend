@@ -4,12 +4,14 @@ package com.example.English4Kids_Backend.controller;
 import com.example.English4Kids_Backend.dtos.ChangePasswordRequest;
 import com.example.English4Kids_Backend.dtos.UserInfo;
 import com.example.English4Kids_Backend.dtos.lessonDTO.VocabularyDTO;
+import com.example.English4Kids_Backend.dtos.userDTO.UserProgressDTO;
 import com.example.English4Kids_Backend.dtos.userDTO.UserVocabularyRequest;
 import com.example.English4Kids_Backend.entities.Vocabulary;
 import com.example.English4Kids_Backend.services.UserService;
 import com.example.English4Kids_Backend.services.UserVocabularyService;
 import com.example.English4Kids_Backend.services.VocabularyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -99,6 +101,21 @@ public class UserController {
             e.printStackTrace();
         }
         return ResponseEntity.notFound().build();
+    }
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Integer id) {
+        try {
+            userService.deleteUserById(id);
+            return ResponseEntity.ok("User deleted successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/progress/{userId}")
+    public ResponseEntity<UserProgressDTO> getUserProgress(@PathVariable Integer userId) {
+        UserProgressDTO userProgress = userService.getUserProgress(userId);
+        return ResponseEntity.ok(userProgress);
     }
 
 }

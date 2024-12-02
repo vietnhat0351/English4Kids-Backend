@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -17,8 +18,11 @@ public class LessonCompletionDTO {
     private String title;
     private String description;
     private String image;
-    private boolean completed; // true if the user has completed the lesson
     private Double score;
+    private String type;
+    private LocalDate date;
+    private int time;
+    private boolean isDone;
     private List<VocabularyDTO> vocabularies;
     private List<QuestionDTO> questions;
 

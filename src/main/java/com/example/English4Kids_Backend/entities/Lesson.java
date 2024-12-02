@@ -24,18 +24,18 @@ public class Lesson {
     private String title;
     private String description;
     private String image;
-    @OneToMany(mappedBy = "lesson", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "lesson", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Question> questions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserLesson> userLessons = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
             name = "lesson_vocabulary",
             joinColumns = @JoinColumn(name = "lesson_id"),
-            inverseJoinColumns = @JoinColumn(name = "vocabulary_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"lesson_id", "vocabulary_id"})
+            inverseJoinColumns = @JoinColumn(name = "vocabulary_id")
+//            uniqueConstraints = @UniqueConstraint(columnNames = {"lesson_id", "vocabulary_id"})
     )
     private List<Vocabulary> vocabularies = new ArrayList<>();
 
