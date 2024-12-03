@@ -13,4 +13,5 @@ public class GAFSBU_Flashcard {
     private String meaning;
     private String image;
     private String description;
+    private String phonetic;
 }
