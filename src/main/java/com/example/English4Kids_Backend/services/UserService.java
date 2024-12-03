@@ -2,6 +2,7 @@ package com.example.English4Kids_Backend.services;
 
 import com.example.English4Kids_Backend.dtos.ChangePasswordRequest;
 import com.example.English4Kids_Backend.dtos.UserInfo;
+import com.example.English4Kids_Backend.dtos.userDTO.UserProgressDTO;
 import com.example.English4Kids_Backend.entities.Role;
 import com.example.English4Kids_Backend.entities.User;
 import com.example.English4Kids_Backend.repositories.*;
@@ -21,6 +22,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserLessonRepository userLessonRepository;
+    private final UserVocabularyRepository userVocabularyRepository;
 
     public UserInfo getCurrentUser(Authentication authentication) {
 
@@ -78,6 +81,7 @@ public class UserService {
                     .email(user.getEmail())
                     .firstName(user.getFirstName())
                     .lastName(user.getLastName())
+                    .avatar(user.getAvatar())
                     .role(user.getRole())
                     .dailyPoints(user.getDailyPoints())
                     .weeklyPoints(user.getWeeklyPoints())
@@ -116,5 +120,27 @@ public class UserService {
             throw new RuntimeException("Old password is incorrect");
         }
 
+    }
+    public void deleteUserById(Integer userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new RuntimeException("User not found with ID: " + userId);
+        }
+        userRepository.deleteById(userId);
+    }
+    public UserProgressDTO getUserProgress(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+        int lessonsLearned = userLessonRepository.countLessonsByUserId(userId);
+        int vocabulariesLearned = userVocabularyRepository.countVocabulariesByUserId(userId);
+
+        return UserProgressDTO.builder()
+                .userId(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .totalLessonsLearned(lessonsLearned)
+                .totalVocabulariesLearned(vocabulariesLearned)
+                .build();
     }
 };

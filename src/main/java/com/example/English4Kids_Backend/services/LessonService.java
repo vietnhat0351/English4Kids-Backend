@@ -9,9 +9,13 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,12 +35,33 @@ public class LessonService {
         }
 
     }
+
     public List<LessonCompletionDTO> getLessonsWithCompletionStatus(Long userId) {
 
         List<Lesson> lessons = lessonRepository.findAll();
+
+        AtomicReference<Double> score = new AtomicReference<>((double) 0);
+        LocalDate date = LocalDate.now();
+        AtomicInteger time = new AtomicInteger();
+        AtomicBoolean isDone = new AtomicBoolean(false);
+
         return lessons.stream().map(lesson -> {
             // Tìm UserLesson tương ứng (nếu có)
-            Optional<UserLesson> userLessonOpt = userLessonRepository.findByUserIdAndLessonId(Math.toIntExact(userId), lesson.getId());
+            List<UserLesson> userLessonOpt = userLessonRepository.findByUserIdAndLessonId(Math.toIntExact(userId), lesson.getId());
+            for (UserLesson userLesson : userLessonOpt) {
+                if (userLessonOpt.isEmpty()) {
+                    continue;
+                }
+                if (userLesson.getScore() > score.get()) {
+                    score.set(userLesson.getScore());
+                }
+                if (userLesson.getTime() < time.get()) {
+                    time.set(userLesson.getTime());
+                }
+                if (userLesson.isDone()) {
+                    isDone.set(true);
+                }
+            }
 
             // Tạo DTO
             return LessonCompletionDTO.builder()
@@ -44,8 +69,11 @@ public class LessonService {
                     .title(lesson.getTitle())
                     .description(lesson.getDescription())
                     .image(lesson.getImage())
-                    .completed(userLessonOpt.isPresent()) // true nếu UserLesson tồn tại
-                    .score(userLessonOpt.map(UserLesson::getScore).orElse(null)) // Lấy score nếu có
+                    .score(score.get())
+                    .type("")
+                    .date(date)
+                    .time(time.get())
+                    .isDone(isDone.get())
                     .vocabularies(lesson.getVocabularies().stream()
                             .map(vocabulary -> VocabularyDTO.builder()
                                     .id(vocabulary.getId())
@@ -70,8 +98,6 @@ public class LessonService {
         }).collect(Collectors.toList());
 
 
-
-
     }
 
     public LessonDTO getLessonById(long id) {
@@ -79,9 +105,29 @@ public class LessonService {
                 .orElseThrow(() -> new EntityNotFoundException("Lesson not found with id: " + id));
         return new LessonDTO(lesson);
     }
-    public LessonCompletionDTO getLessonByIdUser(long id, long userId) {
-        Optional<UserLesson> userLessonOpt = userLessonRepository.findByUserIdAndLessonId(Math.toIntExact(userId), id);
 
+    public LessonCompletionDTO getLessonByIdUser(long id, long userId) {
+
+        AtomicReference<Double> score = new AtomicReference<>((double) 0);
+        LocalDate date = LocalDate.now();
+        AtomicInteger time = new AtomicInteger();
+        AtomicBoolean isDone = new AtomicBoolean(false);
+
+        List<UserLesson> userLessonOpt = userLessonRepository.findByUserIdAndLessonId(Math.toIntExact(userId), id);
+        for (UserLesson userLesson : userLessonOpt) {
+            if (userLessonOpt.isEmpty()) {
+                continue;
+            }
+            if (userLesson.getScore() > score.get()) {
+                score.set(userLesson.getScore());
+            }
+            if (userLesson.getTime() < time.get()) {
+                time.set(userLesson.getTime());
+            }
+            if (userLesson.isDone()) {
+                isDone.set(true);
+            }
+        }
 
         Lesson lesson = lessonRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Lesson not found with id: " + id));
@@ -91,8 +137,11 @@ public class LessonService {
                 .title(lesson.getTitle())
                 .description(lesson.getDescription())
                 .image(lesson.getImage())
-                .completed(userLessonOpt.isPresent()) // true nếu UserLesson tồn tại
-                .score(userLessonOpt.map(UserLesson::getScore).orElse(null)) // Lấy score nếu có
+                .score(score.get())
+                .type("")
+                .date(date)
+                .time(time.get())
+                .isDone(isDone.get())
                 .vocabularies(lesson.getVocabularies().stream()
                         .map(vocabulary -> VocabularyDTO.builder()
                                 .id(vocabulary.getId())
@@ -123,5 +172,21 @@ public class LessonService {
                 .build();
         Lesson savedLesson = lessonRepository.save(lesson);
         return new LessonDTO(savedLesson);
+    }
+
+    public void deleteLesson(long id) {
+        Lesson lesson = lessonRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Lesson not found"));
+        lessonRepository.delete(lesson);
+    }
+
+    public Lesson updateLesson(Lesson lesson) {
+        Lesson currentLesson = lessonRepository.findById(lesson.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Lesson not found"));
+        currentLesson.setTitle(lesson.getTitle());
+        currentLesson.setDescription(lesson.getDescription());
+        currentLesson.setImage(lesson.getImage());
+        return lessonRepository.save(currentLesson);
+
     }
 }

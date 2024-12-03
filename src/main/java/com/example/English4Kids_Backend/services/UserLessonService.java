@@ -20,24 +20,31 @@ public class UserLessonService {
     private final UserLessonRepository userLessonRepository;
 
     public void addOrUpdateUserLesson(UserLessonRequestDTO dto) {
-        Optional<UserLesson> existingUserLesson = userLessonRepository.findByUserIdAndLessonId(Math.toIntExact(Long.valueOf(dto.getUserId())), dto.getLessonId());
-
-        if (existingUserLesson.isPresent()) {
-            UserLesson userLesson = existingUserLesson.get();
-
-
-            if (dto.getScore() > userLesson.getScore()) {
-                userLesson.setScore(dto.getScore());
-                userLessonRepository.save(userLesson);
-            }
-        } else {
+//        Optional<UserLesson> existingUserLesson = userLessonRepository.findByUserIdAndLessonId(Math.toIntExact(Long.valueOf(dto.getUserId())), dto.getLessonId());
+//
+//        if (existingUserLesson.isPresent()) {
+//            UserLesson userLesson = existingUserLesson.get();
+//
+//
+//            if (dto.getScore() > userLesson.getScore()) {
+//                userLesson.setScore(dto.getScore());
+//                userLessonRepository.save(userLesson);
+//            }
+//        } else {
+        System.out.println(dto.getUserId());
+        System.out.println(dto.getLessonId());
+        System.out.println(dto.isDone());
             UserLesson newUserLesson = UserLesson.builder()
                     .user(User.builder().id(dto.getUserId()).build())
                     .lesson(Lesson.builder().id(dto.getLessonId()).build())
                     .score(dto.getScore())
+                    .type(dto.getType())
+                    .date(dto.getDate())
+                    .time(dto.getTime())
+                    .isDone(dto.isDone())
                     .build();
             userLessonRepository.save(newUserLesson);
         }
-    }
+//    }
 
 }

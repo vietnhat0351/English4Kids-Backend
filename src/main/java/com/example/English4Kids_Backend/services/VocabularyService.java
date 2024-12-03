@@ -2,12 +2,13 @@ package com.example.English4Kids_Backend.services;
 
 
 import com.example.English4Kids_Backend.dtos.lessonDTO.VocabularyDTO;
-import com.example.English4Kids_Backend.entities.Lesson;
+import com.example.English4Kids_Backend.dtos.lessonDTO.VocabularyDelete;
 import com.example.English4Kids_Backend.entities.Vocabulary;
 import com.example.English4Kids_Backend.enums.VocabularyType;
 
-import com.example.English4Kids_Backend.repositories.VocabularyRepository;
+import com.example.English4Kids_Backend.repositories.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,10 @@ import java.util.stream.Collectors;
 public class VocabularyService {
     private final VocabularyRepository vocabularyRepository;
     private final TranslationService translationService;
+    private final QuestionRepository questionRepository;
+    private final UserVocabularyRepository userVocabularyRepository;
+    private final LessonVocabularyRepository lessonVocabularyRepository;
+    private final AnswerRepository answerRepository;
 
     public List<VocabularyDTO> getAllVocabularies() {
         try {
@@ -36,34 +41,6 @@ public class VocabularyService {
         }
 
     }
-
-    public Vocabulary getVocabularyById(long id) {
-        return vocabularyRepository.findById(id).orElse(null);
-    }
-
-//    public List<Vocabulary> getVocabulariesByLessonId(long lessonId) {
-//
-//        Optional<List<Vocabulary>> vocabularies = Optional.ofNullable(vocabularyRepository.findByLessonId(lessonId));
-//        if(vocabularies.isPresent()){
-//            List<Vocabulary> vocabularyDTOS = new ArrayList<>();
-//            for (Vocabulary vocabulary : vocabularies.get()) {
-//                Vocabulary vocabularyDTO = Vocabulary.builder()
-//                        .id(vocabulary.getId())
-//                        .word(vocabulary.getWord())
-//                        .meaning(vocabulary.getMeaning())
-//                        .pronunciation(vocabulary.getPronunciation())
-//                        .type(vocabulary.getType())
-//                        .image(vocabulary.getImage())
-//                        .audio(vocabulary.getAudio())
-//                        .build();
-//                vocabularyDTOS.add(vocabularyDTO);
-//            }
-//            return vocabularyDTOS;
-//        }
-//        return null;
-//
-//    }
-
 
 
     public Vocabulary createVocabulary(Vocabulary vocabulary) {
@@ -102,7 +79,7 @@ public class VocabularyService {
                     if (phonetic.get("audio") != null || !phonetic.get("audio").toString().equalsIgnoreCase("".trim()))
                         vocabulary.setAudio((String) phonetic.get("audio"));
                     if (vocabulary.getPronunciation() != null && vocabulary.getAudio() != null
-                    && !vocabulary.getPronunciation().equalsIgnoreCase("") && !vocabulary.getAudio().equalsIgnoreCase(""))
+                            && !vocabulary.getPronunciation().equalsIgnoreCase("") && !vocabulary.getAudio().equalsIgnoreCase(""))
                         break;
                 }
 
@@ -111,49 +88,33 @@ public class VocabularyService {
 
 
                 for (Map<String, Object> meaning : meanings) {
-                    if (meaning.get("partOfSpeech") != null || !meaning.get("partOfSpeech").equals("")){
+                    if (meaning.get("partOfSpeech") != null || !meaning.get("partOfSpeech").equals("")) {
                         String partOfSpeech = (String) meaning.get("partOfSpeech");
-                        if (partOfSpeech.equalsIgnoreCase("noun")){
+                        if (partOfSpeech.equalsIgnoreCase("noun")) {
                             vocabulary.setType(VocabularyType.NOUN);
                             break;
-                        }
-
-                        else if (partOfSpeech.equalsIgnoreCase("verb")){
+                        } else if (partOfSpeech.equalsIgnoreCase("verb")) {
                             vocabulary.setType(VocabularyType.VERB);
                             break;
-                        }
-
-                        else if (partOfSpeech.equalsIgnoreCase("adjective")){
+                        } else if (partOfSpeech.equalsIgnoreCase("adjective")) {
                             vocabulary.setType(VocabularyType.ADJECTIVE);
                             break;
-                        }
-
-                        else if (partOfSpeech.equalsIgnoreCase("adverb")){
+                        } else if (partOfSpeech.equalsIgnoreCase("adverb")) {
                             vocabulary.setType(VocabularyType.ADVERB);
                             break;
-                        }
-
-                        else if (partOfSpeech.equalsIgnoreCase("pronoun")){
+                        } else if (partOfSpeech.equalsIgnoreCase("pronoun")) {
                             vocabulary.setType(VocabularyType.PRONOUN);
                             break;
-                        }
-
-                        else if (partOfSpeech.equalsIgnoreCase("preposition")){
+                        } else if (partOfSpeech.equalsIgnoreCase("preposition")) {
                             vocabulary.setType(VocabularyType.PREPOSITION);
                             break;
-                        }
-
-                        else if (partOfSpeech.equalsIgnoreCase("conjunction")){
+                        } else if (partOfSpeech.equalsIgnoreCase("conjunction")) {
                             vocabulary.setType(VocabularyType.CONJUNCTION);
                             break;
-                        }
-
-                        else if (partOfSpeech.equalsIgnoreCase("interjection")){
+                        } else if (partOfSpeech.equalsIgnoreCase("interjection")) {
                             vocabulary.setType(VocabularyType.INTERJECTION);
                             break;
-                        }
-
-                        else {
+                        } else {
                             vocabulary.setType(VocabularyType.UNKNOWN);
                             break;
                         }
@@ -166,19 +127,63 @@ public class VocabularyService {
         return Optional.of(vocabulary);
     }
 
-    // Hàm kiểm tra và lưu từ vựng vào database nếu chưa có
-    public Vocabulary getOrCreateVocabulary(String word) {
-        Optional<Vocabulary> vocabularyOptional = Optional.ofNullable(vocabularyRepository.findByWord(word));
-
-        // Nếu từ vựng đã tồn tại trong database, trả về kết quả
-        if (vocabularyOptional.isPresent()) {
-            return vocabularyOptional.get();
+    @Transactional
+    public  void deleteVoca(VocabularyDelete vocabularyId) {
+        try{
+            userVocabularyRepository.deleteById(vocabularyId.getVocabularyId());
+            System.out.println("UserVocabulary deleted");
+        }
+        catch (Exception e) {
+            System.err.println("UserVocabulary not found");
+        }
+        try {
+            lessonVocabularyRepository.deleteByVocabularyId(vocabularyId.getVocabularyId());
+            System.out.println("LessonVocabulary deleted");
+        }
+        catch (Exception e) {
+            System.err.println("LessonVocabulary not found");
+        }
+        try {
+            answerRepository.deleteByVocabularyId(vocabularyId.getVocabularyId());
+            System.out.println("Answer deleted");
+        }
+        catch (Exception e) {
+            System.err.println("Answer not found");
+        }
+        try {
+            questionRepository.deleteByVocabularyId(vocabularyId.getVocabularyId());
+            System.out.println("Question deleted");
+        }
+        catch (Exception e) {
+            System.err.println("Question not found");
+        }
+        try {
+            vocabularyRepository.deleteVocaById(vocabularyId.getVocabularyId());
+            System.out.println("Vocabulary deleted");
+        }
+        catch (Exception e) {
+            System.err.println("Vocabulary not found");
         }
 
-        // Nếu từ vựng chưa có, gọi API để lấy thông tin và lưu vào database
-        Optional<Vocabulary> fetchedVocabulary = fetchVocabularyFromApi(word);
-        return fetchedVocabulary.map(vocabularyRepository::save)
-                .orElseThrow(() -> new RuntimeException("Failed to fetch or save vocabulary"));
+
+//        lessonVocabularyRepository.deleteByVocabularyId(vocabularyId.getVocabularyId());
+//        answerRepository.deleteByVocabularyId(vocabularyId.getVocabularyId());
+//        questionRepository.deleteByVocabularyId(vocabularyId.getVocabularyId());
+//        vocabularyRepository.deleteVocaById(vocabularyId.getVocabularyId());
     }
 
+    public Vocabulary updateVocabulary(Vocabulary vocabulary) {
+        Optional<Vocabulary> vocabularyOptional = vocabularyRepository.findById(vocabulary.getId());
+        if (vocabularyOptional.isPresent()) {
+            Vocabulary vocabularyToUpdate = vocabularyOptional.get();
+            vocabularyToUpdate.setWord(vocabulary.getWord());
+            vocabularyToUpdate.setMeaning(vocabulary.getMeaning());
+            vocabularyToUpdate.setPronunciation(vocabulary.getPronunciation());
+            vocabularyToUpdate.setType(vocabulary.getType());
+            vocabularyToUpdate.setImage(vocabulary.getImage());
+            vocabularyToUpdate.setAudio(vocabulary.getAudio());
+            return vocabularyRepository.save(vocabularyToUpdate);
+        }
+        return null;
+    }
 }

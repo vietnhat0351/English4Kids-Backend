@@ -37,6 +37,16 @@ public class Vocabulary {
     @ManyToMany(mappedBy = "vocabularies")
     private List<Lesson> lessons = new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "vocabulary", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Question> questions;
+
+//    @PreRemove
+//    public void removeRelatedQuestions() {
+//        if (questions != null) {
+//            questions.forEach(question -> question.setVocabulary(null));
+//        }
+//    }
     public Vocabulary(long id) {
         this.id = id;
     }

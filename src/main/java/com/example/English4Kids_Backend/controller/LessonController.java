@@ -4,6 +4,7 @@ import com.example.English4Kids_Backend.dtos.UserInfo;
 import com.example.English4Kids_Backend.dtos.lessonDTO.LessonCompletionDTO;
 import com.example.English4Kids_Backend.dtos.lessonDTO.LessonDTO;
 import com.example.English4Kids_Backend.dtos.lessonDTO.UserLessonRequestDTO;
+import com.example.English4Kids_Backend.entities.Lesson;
 import com.example.English4Kids_Backend.services.LessonService;
 import com.example.English4Kids_Backend.services.UserLessonService;
 import com.example.English4Kids_Backend.services.UserService;
@@ -65,6 +66,16 @@ public class LessonController {
     public ResponseEntity<LessonDTO> createLesson(@RequestBody LessonDTO lessonDTO) {
         LessonDTO createdLesson = lessonService.createLesson(lessonDTO);
         return ResponseEntity.ok(createdLesson);
+    }
+    @PostMapping("/update")
+    public ResponseEntity<Lesson> createLesson(@RequestBody Lesson lesson) {
+        Lesson createdLesson = lessonService.updateLesson(lesson);
+        return ResponseEntity.ok(createdLesson);
+    }
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<?> deleteLesson(@PathVariable long id) {
+        lessonService.deleteLesson(id);
+        return ResponseEntity.ok("Lesson deleted successfully");
     }
 
 
