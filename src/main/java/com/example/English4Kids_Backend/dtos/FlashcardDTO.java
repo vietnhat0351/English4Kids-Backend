@@ -15,4 +15,5 @@ public class FlashcardDTO {
     private String audio;
     private String category;
     private String description;
+    private String phonetic;
 }
