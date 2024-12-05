@@ -40,27 +40,32 @@ public class LessonService {
 
         List<Lesson> lessons = lessonRepository.findAll();
 
-        AtomicReference<Double> score = new AtomicReference<>((double) 0);
-        LocalDate date = LocalDate.now();
-        AtomicInteger time = new AtomicInteger();
-        AtomicBoolean isDone = new AtomicBoolean(false);
+
 
         return lessons.stream().map(lesson -> {
+            AtomicReference<Double> score = new AtomicReference<>((double) 0);
+            LocalDate date = LocalDate.now();
+            AtomicInteger time = new AtomicInteger();
+            AtomicBoolean isDone = new AtomicBoolean(false);
             // Tìm UserLesson tương ứng (nếu có)
             List<UserLesson> userLessonOpt = userLessonRepository.findByUserIdAndLessonId(Math.toIntExact(userId), lesson.getId());
             for (UserLesson userLesson : userLessonOpt) {
                 if (userLessonOpt.isEmpty()) {
                     continue;
                 }
-                if (userLesson.getScore() > score.get()) {
-                    score.set(userLesson.getScore());
-                }
-                if (userLesson.getTime() < time.get()) {
-                    time.set(userLesson.getTime());
+                if (!userLesson.getType().equalsIgnoreCase("QUIZ")) {
+                    if (userLesson.getScore() > score.get()) {
+                        score.set(userLesson.getScore());
+                    }
+                    if (userLesson.getTime() < time.get()) {
+                        time.set(userLesson.getTime());
+                    }
+
                 }
                 if (userLesson.isDone()) {
                     isDone.set(true);
                 }
+
             }
 
             // Tạo DTO
