@@ -77,6 +77,14 @@ public class LessonController {
         lessonService.deleteLesson(id);
         return ResponseEntity.ok("Lesson deleted successfully");
     }
+    @GetMapping("/get-point-seven-day/{userId}")
+    public ResponseEntity<?> getPointSevenDay(@PathVariable int userId) {
+        return ResponseEntity.ok(lessonService.getPointSevenDay(userId));
+    }
+    @GetMapping("/get-statistic")
+    public ResponseEntity<?> getPointSevenDay2(  @RequestParam long lessonId, @RequestParam long userId) {
+        return ResponseEntity.ok(lessonService.getStatistic(lessonId, userId));
+    }
 
 
 }

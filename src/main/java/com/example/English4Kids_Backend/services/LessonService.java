@@ -194,4 +194,17 @@ public class LessonService {
         return lessonRepository.save(currentLesson);
 
     }
+
+    public List<StatisticDTO> getPointSevenDay(int userId) {
+        List<Object[]> results = lessonRepository.getPointSevenDay(userId);
+        return results.stream()
+                .map(StatisticDTO::fromObject) // Chuyển đổi từ Object[] sang StatisticDTO
+                .collect(Collectors.toList());
+    }
+    public List<StatisticDTO2> getStatistic( long lessonId,long userId) {
+        List<Object[]> results = lessonRepository.getStatistic(lessonId, userId);
+        return results.stream()
+                .map(StatisticDTO2::fromObject) // Chuyển đổi từ Object[] sang StatisticDTO
+                .collect(Collectors.toList());
+    }
 }
