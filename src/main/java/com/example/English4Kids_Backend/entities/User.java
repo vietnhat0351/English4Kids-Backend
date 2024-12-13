@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,6 +36,11 @@ public class User implements UserDetails {
     private Integer totalPoints;
     private Integer streak; // Continuous streak
     private LocalDate lastLearningDate;
+    private String gender;
+    private LocalDate dob;
+    private LocalDate joinDate;
+    private Integer wordshakeHighScore;
+    private LocalDateTime lastWordshakeDate;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserLesson> userLessons = new ArrayList<>();

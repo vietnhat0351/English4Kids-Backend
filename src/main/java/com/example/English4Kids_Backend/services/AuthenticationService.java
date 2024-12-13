@@ -42,6 +42,7 @@ public class AuthenticationService {
                     .dailyPoints(0)
                     .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
                     .weeklyPoints(0)
+                    .joinDate(LocalDate.now())
                     .totalPoints(0)
                     .streak(0)
                     .lastLearningDate(LocalDate.now())

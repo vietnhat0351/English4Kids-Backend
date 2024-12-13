@@ -20,15 +20,11 @@ public class UserInfo {
     private String email;
     private String avatar;
     private Role role;
-
-
     private Integer dailyPoints;
-
     private Integer weeklyPoints;
-
     private Integer totalPoints;
-
     private Integer streak; // Continuous streak
-
     private LocalDate lastLearningDate;
+    private String gender;
+    private LocalDate dob;
 }

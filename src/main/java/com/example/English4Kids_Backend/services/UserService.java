@@ -44,6 +44,8 @@ public class UserService {
                         .totalPoints(current.getTotalPoints())
                         .streak(current.getStreak())
                         .lastLearningDate(current.getLastLearningDate())
+                        .dob(current.getDob())
+                        .gender(current.getGender())
                         .build();
             }
 
@@ -103,6 +105,8 @@ public class UserService {
             user.setFirstName(userUpdate.getFirstName());
             user.setLastName(userUpdate.getLastName());
             user.setAvatar(userUpdate.getAvatar());
+            user.setDob(userUpdate.getDob());
+            user.setGender(userUpdate.getGender());
             userRepository.save(user);
         }
         return userUpdate;

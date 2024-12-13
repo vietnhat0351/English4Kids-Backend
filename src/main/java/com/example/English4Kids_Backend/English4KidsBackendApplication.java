@@ -58,6 +58,8 @@ public class English4KidsBackendApplication {
                     .streak(0)
                     .weeklyPoints(0)
                     .totalPoints(0)
+                    .joinDate(LocalDate.now().minusDays(1))
+                    .gender("female")
                     .build();
             userRepository.save(user);
 
@@ -74,6 +76,8 @@ public class English4KidsBackendApplication {
                     .streak(0)
                     .weeklyPoints(100)
                     .totalPoints(0)
+                    .joinDate(LocalDate.now().minusDays(2))
+                    .gender("male")
                     .build();
             userRepository.save(user1);
 
@@ -89,6 +93,8 @@ public class English4KidsBackendApplication {
                     .streak(0)
                     .weeklyPoints(200)
                     .totalPoints(200)
+                    .joinDate(LocalDate.now().minusDays(1))
+                    .gender("male")
                     .build();
             userRepository.save(user2);
 
@@ -104,6 +110,8 @@ public class English4KidsBackendApplication {
                     .streak(0)
                     .weeklyPoints(300)
                     .totalPoints(300)
+                    .joinDate(LocalDate.now().minusDays(1))
+                    .gender("female")
                     .build();
             userRepository.save(user3);
 
@@ -118,6 +126,8 @@ public class English4KidsBackendApplication {
                     .lastLearningDate(LocalDate.now())
                     .streak(0)
                     .weeklyPoints(400)
+                    .gender("male")
+                    .joinDate(LocalDate.now().minusDays(3))
                     .totalPoints(400)
                     .build();
             userRepository.save(user4);
@@ -133,7 +143,9 @@ public class English4KidsBackendApplication {
                     .lastLearningDate(LocalDate.now())
                     .streak(0)
                     .weeklyPoints(50)
+                    .joinDate(LocalDate.now().minusDays(1))
                     .totalPoints(500)
+                    .gender("female")
                     .build();
             userRepository.save(user5);
 
@@ -148,7 +160,9 @@ public class English4KidsBackendApplication {
                     .lastLearningDate(LocalDate.now())
                     .streak(0)
                     .weeklyPoints(60)
+                    .joinDate(LocalDate.now().minusDays(1))
                     .totalPoints(600)
+                    .gender("female")
                     .build();
             userRepository.save(user6);
 
@@ -163,6 +177,7 @@ public class English4KidsBackendApplication {
                     .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
                     .streak(0)
                     .weeklyPoints(70)
+                    .joinDate(LocalDate.now().minusDays(5))
                     .totalPoints(700)
                     .build();
             userRepository.save(user7);
@@ -178,6 +193,7 @@ public class English4KidsBackendApplication {
                     .streak(0)
                     .weeklyPoints(80)
                     .avatar("https://assets.quizlet.com/static/i/animals/108.3b3090077134db3.jpg")
+                    .joinDate(LocalDate.now().minusDays(4))
                     .totalPoints(800)
                     .build();
             userRepository.save(user8);
@@ -193,6 +209,7 @@ public class English4KidsBackendApplication {
                     .lastLearningDate(LocalDate.now())
                     .streak(0)
                     .weeklyPoints(90)
+                    .joinDate(LocalDate.now().minusDays(3))
                     .totalPoints(900)
                     .build();
             userRepository.save(user9);
@@ -208,6 +225,7 @@ public class English4KidsBackendApplication {
                     .lastLearningDate(LocalDate.now())
                     .streak(0)
                     .weeklyPoints(100)
+                    .joinDate(LocalDate.now().minusDays(2))
                     .totalPoints(1000)
                     .build();
             userRepository.save(user10);
